@@ -1,4 +1,4 @@
-package com.sp.yivideo;
+package com.sp.video.yi.demo;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;

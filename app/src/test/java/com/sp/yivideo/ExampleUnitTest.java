@@ -1,4 +1,4 @@
-package com.sp.yivideo;
+package com.sp.video;
 
 import org.junit.Test;
 

@@ -3,7 +3,7 @@ apply plugin: 'com.neenbedankt.android-apt'
 
 android {
     defaultConfig {
-        applicationId "com.nd.hy.android.hermes.demo"
+        applicationId "com.sp.video.yi.demo"
     }
     buildTypes {
         release {
