@@ -1,16 +1,5 @@
 apply from: "${cacheConfigs}/gradle/library.gradle"
 
-android {
-    defaultConfig {
-        applicationId "com.sp.video.yi.vlcplayer"
-    }
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-    }
-}
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
