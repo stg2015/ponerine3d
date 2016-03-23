@@ -33,7 +33,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
-        btnStart.setOnClickListener(this);
 
     }
     private static final String RTSP_URL_FORMATER = "rtsp://%1$s:554/live";
@@ -46,7 +45,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //使用步骤
         //第一步 ：通过findViewById或者new PlayerView()得到mPlayerView对象
         //mPlayerView= new PlayerView(PlayerActivity.this);
-        mPlayerView = (PlayerView) findViewById(R.id.pv_video);
 
         //第二步：设置参数，毫秒为单位
         mPlayerView.setNetWorkCache(1000);
