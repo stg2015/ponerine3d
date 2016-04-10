@@ -34,7 +34,7 @@ ext {
     testingSupportLibVersion = '0.1'
 
     //Hermes
-    hermesVersion = '2.2.2'
+    hermesVersion = '2.2.1-rc3'
 
     libs = [
             supportV4          : "com.android.support:support-v4:${androidSupportVersion}",
