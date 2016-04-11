@@ -3,4 +3,72 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <!--白色-->
+    <color name="sp_white_primary">#ffffff</color>
+    <color name="sp_white_f5">#f5f5f5</color>
+    <color name="sp_white_30p">#4cffffff</color>
+    <color name="sp_white_50p">#7Fffffff</color>
+    <color name="sp_white_e4">#e4e4e4</color>
+    <color name="sp_white_38">#38000000</color>
+
+    <!--灰色-->
+    <color name="sp_gray_primary">#9a9a9a</color>
+    <color name="sp_gray_a6">#a6a6a6</color>
+    <color name="sp_gray_b2">#b2b2b2</color>
+    <color name="sp_gray_33">#333333</color>
+    <color name="sp_gray_55">#555555</color>
+    <color name="sp_gray_66">#666666</color>
+    <color name="sp_gray_e5">#e5e5e5</color>
+    <color name="sp_gray_f2">#f2f2f2</color>
+    <color name="sp_gray_f4">#F4F4F4</color>
+    <color name="sp_gray_9c">#9c9c9c</color>
+    <color name="sp_gray_99">#999999</color>
+    <color name="sp_gray_cc">#cccccc</color>
+    <color name="sp_gray_f1">#f1f1f1</color>
+
+    <color name="sp_gray_c2">#c2c2c2</color>
+    <color name="sp_gray_30">#303030</color>
+    <color name="sp_gray_d9dcde">#d9dcde</color>
+    <color name="sp_gray_dce0e2">#dce0e2</color>
+    <color name="sp_gray_db">#DBDBDB</color>
+    <color name="sp_gray_e4e4e4">#e4e4e4</color>
+    <color name="sp_gray_f8">#F8F8F8</color>
+    <color name="sp_gray_dd">#dddddd</color>
+    <color name="sp_gray_c7">#c7c7c7</color>
+    <color name="sp_gray_f6">#f6f6f6</color>
+    <color name="sp_gray_f7">#f7f7f7</color>
+    <color name="sp_gray_77">#777777</color>
+    <color name="sp_gray_ed">#ededed</color>
+    <color name="sp_gray_e0">#e0e0e0</color>
+    <color name="sp_gray_eb">#ebebeb</color>
+    <!--黑色-->
+    <color name="sp_black_primary">#000000</color>
+    <color name="sp_black_33">#333333</color>
+    <color name="sp_black_66">#666666</color>
+    <color name="sp_black_77">#777777</color>
+    <color name="sp_black_282b2e">#282b2e</color>
+    <color name="sp_black_14p">#23000000</color>
+    <color name="sp_tran_11">#11000000</color>
+    <color name="sp_tran_22">#22000000</color>
+    <color name="sp_tran_7f">#7f000000</color>
+    
+    <color name="sp_transparent">#00000000</color>
+    <!--透明-->
+    <color name="sp_trans_22">#22000000</color>
+    <!--白色透明 0-100 -->
+    <color name="sp_trans_20">#33ffffff</color>
+    <color name="sp_trans_30">#4Dffffff</color>
+    <color name="sp_trans_40">#66ffffff</color>
+    <color name="sp_trans_50">#7Fffffff</color>
+    <color name="sp_trans_75">#c0ffffff</color>
+    <color name="sp_trans_80">#CDffffff</color>
+
+
+    <!--黑色透明 0-100 -->
+    <color name="sp_black_30">#4D000000</color>
+    <color name="sp_black_40">#66000000</color>
+    <color name="sp_black_50">#7F000000</color>
+    <color name="sp_black_80">#CD000000</color>
+
 </resources>

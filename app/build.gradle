@@ -25,14 +25,46 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(':vlc-player')
 
+    //developframework
     compile hermes.compat
+
     compile libs.okHttp
+    compile libs.daggerCompiler
+    compile libs.superToasts
+    compile libs.rxJava
+    compile libs.rxAndroid
+    compile libs.retrofit2
+    compile libs.retrofit2WithJackson
+    compile libs.retrofit2RxAdapter
     compile clib.sqlbrite
+    compile libs.butterKnife
+
+    apt "org.projectlombok:lombok:1.16.2"
+    apt "com.google.dagger:dagger-compiler:2.0"
+
     apt "com.github.Raizlabs.DBFlow:dbflow-processor:${dbflow_version}"
     compile "com.github.Raizlabs.DBFlow:dbflow-core:${dbflow_version}"
     compile "com.github.Raizlabs.DBFlow:dbflow:${dbflow_version}"
+
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:support-v4:23.1.1'
-    compile 'com.android.support:recyclerview-v7:23.1.1'
-    compile 'com.jakewharton:butterknife:7.0.1'
+
+
+    //3-party libs for controls or widgets
+    compile 'com.sp.ui.material:material-libs:1.0.0'
+    compile 'com.sp.ui.material:pull-to-collapse:1.0.1'
+    compile 'com.sp.views.adapter:common-adapter:1.0.0'
+
+    compile libs.nineOldAndroid
+    compile 'com.fuckhtc:gson:2.1'
+
+
+    //android libs
+    compile libs.supportV4
+    compile libs.supportDesign
+    compile libs.appcompat
+    compile libs.recyclerView
+
+
+    provided libs.javaxAnnotation
+    provided libs.supportAnnotation
 }

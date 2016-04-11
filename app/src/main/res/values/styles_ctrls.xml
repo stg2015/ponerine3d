@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="SpDialogWindowNoAnim" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@null</item>
+        <item name="android:windowExitAnimation">@null</item>
+    </style>
+
+    <style name="SpDialogCommons">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
+        <!--<item name="android:windowFullscreen">true</item>-->
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <!--模糊-->
+    </style>
+
+    <style name="SpDialogCustom" parent="android:style/Theme.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:alwaysDrawnWithCache">false</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+
+
+    <style name="SpDialogTransparentFullScreen">
+        <item name="android:windowBackground">@color/sp_transparent</item>
+        <item name="android:windowNoTitle">true</item>
+        <!--<item name="android:windowFullscreen">true</item>-->
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <!--模糊-->
+    </style>
+
+    <style name="SpDialogAnimFromBottom" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/sp_slide_in_from_bottom</item>
+        <item name="android:windowExitAnimation">@anim/sp_slide_out_to_bottom</item>
+    </style>
+
+    <style name="SpDialogWindowAnimFade" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/sp_fade_in</item>
+        <item name="android:windowExitAnimation">@anim/sp_fade_out</item>
+    </style>
+
+    <!-- Dialog UP-->
+
+    <style name="SpTextViewCustomHeaderSide">
+        <item name="android:layout_width">48dp</item>
+        <item name="android:layout_height">44dp</item>
+        <item name="android:background">@drawable/sp_bg_header_left</item>
+        <item name="android:textColor">@color/sp_font_header_title</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="SpDialogTextView">
+        <item name="android:textSize">@dimen/sp_font_18sp</item>
+        <item name="android:textColor">#1694eb</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">44dp</item>
+        <item name="android:background">@drawable/sp_dialog_button_bottom_ring_selector</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="SpProgressBar" parent="@android:style/Widget.ProgressBar">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:focusable">false</item>
+        <item name="android:indeterminate">false</item>
+    </style>
+
+    <style name="SpProgressBar.Small">
+        <item name="android:indeterminate">true</item>
+        <item name="android:indeterminateDrawable">@drawable/sp_progress_loading</item>
+        <item name="android:minWidth">20dp</item>
+        <item name="android:maxWidth">20dp</item>
+        <item name="android:minHeight">20dp</item>
+        <item name="android:maxHeight">20dp</item>
+    </style>
+</resources>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/dialog"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical" >
+
+    <include layout="@layout/sp_dialog_main"/>
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+        <View
+            android:id="@+id/line"
+            android:layout_width="1px"
+            android:layout_height="44dp"
+            android:layout_centerHorizontal="true"
+            android:background="@color/sp_divider_primary"/>
+
+        <TextView
+            android:id="@+id/leftBtn"
+            style="@style/SpDialogTextView"
+            android:layout_width="fill_parent"
+            android:layout_toLeftOf="@id/line" />
+
+        <TextView
+            android:id="@+id/rightBtn"
+            style="@style/SpDialogTextView"
+            android:layout_width="fill_parent"
+            android:textColor="#666666"
+            android:layout_toRightOf="@id/line" />
+    </RelativeLayout>
+
+</LinearLayout>

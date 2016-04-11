@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--文字-->
+    <dimen name="sp_font_31sp">31sp</dimen>
+    <dimen name="sp_font_30sp">30sp</dimen>
+    <dimen name="sp_font_29sp">29sp</dimen>
+    <dimen name="sp_font_28sp">28sp</dimen>
+    <dimen name="sp_font_27sp">27sp</dimen>
+    <dimen name="sp_font_26sp">26sp</dimen>
+    <dimen name="sp_font_25sp">25sp</dimen>
+    <dimen name="sp_font_24sp">24sp</dimen>
+    <dimen name="sp_font_22sp">22sp</dimen>
+    <dimen name="sp_font_20sp">20sp</dimen>
+    <dimen name="sp_font_18sp">18sp</dimen>
+    <dimen name="sp_font_17sp">17sp</dimen>
+    <dimen name="sp_font_16sp">16sp</dimen>
+    <dimen name="sp_font_15sp">15sp</dimen>
+    <dimen name="sp_font_14sp">14sp</dimen>
+    <dimen name="sp_font_13sp">13sp</dimen>
+    <dimen name="sp_font_12sp">12sp</dimen>
+    <dimen name="sp_font_10sp">10sp</dimen>
+    <dimen name="sp_font_8sp">8sp</dimen>
+    <dimen name="sp_font_9sp">9sp</dimen>
+</resources>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="sp_font_header_title">@android:color/white</color>
+    <color name="sp_header_primary">@color/colorPrimary</color>
+    <color name="sp_divider_primary">#19000000</color>
+    <color name="pltCourseStudyRefreshColorScheme">@color/colorPrimary</color>
+</resources>
