@@ -6,19 +6,15 @@ subprojects { project ->
 
     repositories {
         jcenter()
-        maven {
-            url = "http://nexus.sdp.nd/nexus/content/groups/android-public/"
-        }
-//        maven { url 'http://localhost:8081/nexus/content/groups/android/' }
+//        maven { url = "http://nexus.sdp.nd/nexus/content/groups/android-public/"  }
+        maven { url 'http://localhost:8081/nexus/content/groups/android/' }
 //        maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
     }
 
     buildscript {
         repositories {
             jcenter()
-            maven {
-                url = "http://nexus.sdp.nd/nexus/content/groups/android-public/"
-            }
+//            maven {  url = "http://nexus.sdp.nd/nexus/content/groups/android-public/"   }
         }
         dependencies {
             classpath 'com.android.tools.build:gradle:1.5.0'
