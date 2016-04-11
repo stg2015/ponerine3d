@@ -1,6 +1,9 @@
 package com.sp.video.yi.data.server;
 
+import com.sp.video.yi.data.model.Contributor;
 import com.sp.video.yi.data.model.User;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -16,4 +19,10 @@ public interface ServerApi {
 
     @GET("users/{user}")
     Observable<User> observableUserInfo(@Path("user") String user);
+
+    @GET("repos/{owner}/{repo}/contributors}")
+    Observable<List<Contributor>> observableContributors(
+            @Path("owner") String owner,
+            @Path("repo") String repo
+    );
 }

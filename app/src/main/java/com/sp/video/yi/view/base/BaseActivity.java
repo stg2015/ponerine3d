@@ -58,7 +58,7 @@ public abstract class BaseActivity extends AbsRxCompatActivity {
     protected void onBaseCreate(Bundle state) {
         setContentView(getLayoutId());
         mRootView = findViewById(android.R.id.content);
-        ButterKnife.bind(this);
+        ButterKnife.bind(this,mRootView);
         Ln.d("Activity create:[%s]", getClass().getSimpleName());
     }
 
