@@ -8,7 +8,10 @@
     <TextView
         android:id="@+id/tv"
         android:layout_width="match_parent"
-        android:layout_height="300dp"/>
+        android:layout_height="300dp"
+        android:textSize="@dimen/sp_font_28sp"
+        android:text="test"
+        android:gravity="center"/>
     <Button
         android:id="@+id/btn_call"
         android:text="retrofit_call"

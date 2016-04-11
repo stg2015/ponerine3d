@@ -1,6 +1,7 @@
 package com.sp.video.yi.data.server;
 
 import com.sp.video.yi.data.model.Contributor;
+import com.sp.video.yi.data.model.Readme;
 import com.sp.video.yi.data.model.User;
 
 import java.util.List;
@@ -25,4 +26,7 @@ public interface ServerApi {
             @Path("owner") String owner,
             @Path("repo") String repo
     );
+
+    @GET("repos/typecho-fans/plugins/readme")
+    Observable<Readme> observableReadme();
 }

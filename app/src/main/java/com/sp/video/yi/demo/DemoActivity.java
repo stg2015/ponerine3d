@@ -6,6 +6,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.sp.video.yi.data.model.Contributor;
+import com.sp.video.yi.data.model.Readme;
 import com.sp.video.yi.data.model.User;
 import com.sp.video.yi.view.base.BaseActivity;
 
@@ -44,19 +45,19 @@ public class DemoActivity extends BaseActivity {
 
     @OnClick(R.id.btn_obver)
     public void onClickObservable() {
-       /* bind(getDataLayer().getApi().observableUserInfo("sp958857"))
+        bind(getDataLayer().getApi().observableUserInfo("sp958857"))
                 .subscribe(new Action1<User>() {
                     @Override
                     public void call(User user) {
-                        tv.setText(user.getAvatarUrl() + "");
+                        tv.setText(user.getLogin() + "");
                     }
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
                         throwable.printStackTrace();
                     }
-                });*/
-        bind(getDataLayer().getApi().observableContributors("square","retrofit"))
+                });
+   /*     bind(getDataLayer().getApi().observableContributors("square","retrofit"))
                 .subscribe(new Action1<List<Contributor>>() {
                     @Override
                     public void call(List<Contributor> contributorList) {
@@ -69,7 +70,22 @@ public class DemoActivity extends BaseActivity {
                     public void call(Throwable throwable) {
                         throwable.printStackTrace();
                     }
-                });
+                });*/
+     /*   bind(getDataLayer().getApi().observableReadme())
+                .subscribe(new Action1<Readme>() {
+                    @Override
+                    public void call(Readme readme) {
+                        tv.setText(readme.getSize() + "");
+
+
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        throwable.printStackTrace();
+                    }
+                });*/
+
     }
 
     @OnClick(R.id.btn_call)

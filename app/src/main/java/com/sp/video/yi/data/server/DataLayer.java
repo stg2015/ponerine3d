@@ -35,7 +35,8 @@ public class DataLayer {
                         .method(original.method(), original.body())
                         .build();
 
-                Response response = chain.proceed(request);
+//                Response response = chain.proceed(request);
+                Response response = chain.proceed(original);
 
                 // Customize or return the response
                 return response;
