@@ -62,6 +62,8 @@ dependencies {
     compile libs.nineOldAndroid
     compile 'com.fuckhtc:gson:2.1'
 
+    compile 'io.netty:netty:4.0.0.Alpha8'
+//    compile 'io.netty:netty-example:4.1.0.CR7'
 
     //android libs
     compile libs.multidex

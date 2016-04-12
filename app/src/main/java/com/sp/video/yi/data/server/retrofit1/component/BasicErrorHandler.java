@@ -1,4 +1,4 @@
-package com.sp.video.yi.data.server.retrofit1;
+package com.sp.video.yi.data.server.retrofit1.component;
 
 import retrofit.ErrorHandler;
 import retrofit.RetrofitError;
