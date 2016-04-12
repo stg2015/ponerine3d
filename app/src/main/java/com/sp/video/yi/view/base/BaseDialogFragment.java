@@ -16,7 +16,8 @@ import com.nd.hy.android.commons.util.Ln;
 import com.nd.hy.android.hermes.frame.base.AppContextUtil;
 import com.nd.hy.android.hermes.frame.view.AbsRxHermesDialogFragment;
 import com.sp.video.yi.common.SchedulerFactory;
-import com.sp.video.yi.data.server.DataLayer;
+import com.sp.video.yi.data.server.retrofit1.DataLayerRetrofit1Server;
+import com.sp.video.yi.data.server.retrofit2.DataLayerRetrofit2Server;
 import com.sp.video.yi.demo.R;
 import com.sp.video.yi.inject.AppComponent;
 
@@ -36,7 +37,17 @@ import rx.android.schedulers.AndroidSchedulers;
 public abstract class BaseDialogFragment extends AbsRxHermesDialogFragment {
 
     @Inject
-    DataLayer mDataLayer;
+    DataLayerRetrofit2Server mDataLayerRetrofit2;
+    @Inject
+    DataLayerRetrofit1Server mDataLayerRetrofit1;
+
+    public DataLayerRetrofit2Server getRetrofit2DataLayer() {
+        return mDataLayerRetrofit2;
+    }
+
+    public DataLayerRetrofit1Server getRetrofit1DataLayer() {
+        return mDataLayerRetrofit1;
+    }
 
     protected boolean mTablet;
 
@@ -44,10 +55,6 @@ public abstract class BaseDialogFragment extends AbsRxHermesDialogFragment {
 
     public BaseDialogFragment() {
         AppComponent.Instance.get().inject(this);
-    }
-
-    public DataLayer getDataLayer() {
-        return mDataLayer;
     }
 
     @SuppressWarnings("unchecked")

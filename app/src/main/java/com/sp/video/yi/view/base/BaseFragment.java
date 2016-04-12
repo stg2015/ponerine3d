@@ -20,7 +20,8 @@ import com.nd.hy.android.commons.util.device.ResourceUtils;
 import com.nd.hy.android.hermes.frame.base.AppContextUtil;
 import com.nd.hy.android.hermes.frame.view.AbsRxHermesFragment;
 import com.sp.video.yi.common.SchedulerFactory;
-import com.sp.video.yi.data.server.DataLayer;
+import com.sp.video.yi.data.server.retrofit1.DataLayerRetrofit1Server;
+import com.sp.video.yi.data.server.retrofit2.DataLayerRetrofit2Server;
 import com.sp.video.yi.inject.AppComponent;
 
 import javax.inject.Inject;
@@ -33,7 +34,18 @@ import rx.android.schedulers.AndroidSchedulers;
 public abstract class BaseFragment extends AbsRxHermesFragment {
 
     @Inject
-    DataLayer mDataLayer;
+    DataLayerRetrofit2Server mDataLayerRetrofit2;
+    @Inject
+    DataLayerRetrofit1Server mDataLayerRetrofit1;
+
+    public DataLayerRetrofit2Server getRetrofit2DataLayer() {
+        return mDataLayerRetrofit2;
+    }
+
+    public DataLayerRetrofit1Server getRetrofit1DataLayer() {
+        return mDataLayerRetrofit1;
+    }
+
     protected View mRootView;
     protected static final int PAGE_SIZE = 20;
 
@@ -41,9 +53,6 @@ public abstract class BaseFragment extends AbsRxHermesFragment {
         AppComponent.Instance.get().inject(this);
     }
 
-    public DataLayer getDataLayer() {
-        return mDataLayer;
-    }
 
     @SuppressWarnings("unchecked")
     protected final <E extends View> E getViewWithoutButterKnife(int id) {

@@ -10,8 +10,8 @@ import com.sp.video.yi.view.base.BaseFragment;
 
 
 /**
- * @author yangz
- * @version 2015/6/9.
+ *
+ * 通用app 注入
  */
 public interface AppComponent {
 

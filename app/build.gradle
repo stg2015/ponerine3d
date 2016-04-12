@@ -4,6 +4,7 @@ apply plugin: 'com.neenbedankt.android-apt'
 android {
     defaultConfig {
         applicationId "com.sp.video.yi.demo"
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -28,11 +29,15 @@ dependencies {
     //developframework
     compile hermes.compat
 
-    compile libs.okHttp
+//    compile libs.okHttp2
+    compile libs.okHttp3
+    compile libs.okHttp3ForRetrofit1
     compile libs.daggerCompiler
     compile libs.superToasts
     compile libs.rxJava
     compile libs.rxAndroid
+    compile libs.retrofit1
+    compile libs.retrofit1WithJackson
     compile libs.retrofit2
     compile libs.retrofit2WithJackson
     compile libs.retrofit2RxAdapter
@@ -59,6 +64,7 @@ dependencies {
 
 
     //android libs
+    compile libs.multidex
     compile libs.supportV4
     compile libs.supportDesign
     compile libs.appcompat

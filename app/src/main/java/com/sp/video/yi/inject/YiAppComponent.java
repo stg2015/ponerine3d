@@ -1,6 +1,7 @@
 package com.sp.video.yi.inject;
 
-import android.app.Service;
+import com.sp.video.yi.inject.provide.DataLayerRetrofit1Module;
+import com.sp.video.yi.inject.provide.DataLayerRetrofit2Module;
 
 import javax.inject.Singleton;
 
@@ -13,11 +14,10 @@ import dagger.Component;
  */
 @Singleton
 @Component(modules = {
-        DataLayerModule.class
+        DataLayerRetrofit1Module.class,
+        DataLayerRetrofit2Module.class
 })
 
-
 public interface YiAppComponent extends AppComponent {
-
 
 }

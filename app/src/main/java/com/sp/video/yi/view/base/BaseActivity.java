@@ -11,7 +11,8 @@ import com.github.johnpersano.supertoasts.SuperToast;
 import com.nd.hy.android.commons.util.Ln;
 import com.nd.hy.android.hermes.frame.view.AbsRxCompatActivity;
 import com.sp.video.yi.common.SchedulerFactory;
-import com.sp.video.yi.data.server.DataLayer;
+import com.sp.video.yi.data.server.retrofit1.DataLayerRetrofit1Server;
+import com.sp.video.yi.data.server.retrofit2.DataLayerRetrofit2Server;
 import com.sp.video.yi.inject.AppComponent;
 
 
@@ -22,8 +23,7 @@ import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 
 public abstract class BaseActivity extends AbsRxCompatActivity {
-    @Inject
-    DataLayer mDataLayer;
+
 
     protected View mRootView;
 
@@ -31,8 +31,17 @@ public abstract class BaseActivity extends AbsRxCompatActivity {
         AppComponent.Instance.get().inject(this);
     }
 
-    public DataLayer getDataLayer() {
-        return mDataLayer;
+    @Inject
+    DataLayerRetrofit2Server mDataLayerRetrofit2;
+    @Inject
+    DataLayerRetrofit1Server mDataLayerRetrofit1;
+
+    public DataLayerRetrofit2Server getRetrofit2DataLayer() {
+        return mDataLayerRetrofit2;
+    }
+
+    public DataLayerRetrofit1Server getRetrofit1DataLayer() {
+        return mDataLayerRetrofit1;
     }
 
     @SuppressWarnings("unchecked")

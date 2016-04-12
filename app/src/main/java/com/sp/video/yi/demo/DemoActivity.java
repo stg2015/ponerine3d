@@ -1,20 +1,20 @@
 package com.sp.video.yi.demo;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.sp.video.yi.data.model.Contributor;
-import com.sp.video.yi.data.model.Readme;
 import com.sp.video.yi.data.model.User;
 import com.sp.video.yi.view.base.BaseActivity;
 
-import java.util.List;
-
 import butterknife.Bind;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 import okhttp3.ResponseBody;
+import retrofit.RetrofitError;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -24,12 +24,19 @@ import rx.functions.Action1;
  * Created by Weichao Wang on 2016/4/11.
  */
 public class DemoActivity extends BaseActivity {
+
+    private static final String NAME = "sp958857";
+
     @Bind(R.id.tv)
     TextView     tv;
-    @Bind(R.id.btn_call)
-    Button       btnCall;
-    @Bind(R.id.btn_obver)
-    Button       btnObver;
+    @Bind(R.id.btn_retrofit1_async)
+    Button       btnRetrofit1Async;
+    @Bind(R.id.btn_retrofit1_obserable)
+    Button       btnRetrofit1Obserable;
+    @Bind(R.id.btn_retrofit2_call)
+    Button       btnRetrofit2Call;
+    @Bind(R.id.btn_retrofit2_obserable)
+    Button       btnRetrofit2Obserable;
     @Bind(R.id.ll_container)
     LinearLayout llContainer;
 
@@ -43,13 +50,31 @@ public class DemoActivity extends BaseActivity {
 
     }
 
-    @OnClick(R.id.btn_obver)
-    public void onClickObservable() {
-        bind(getDataLayer().getApi().observableUserInfo("sp958857"))
+    @OnClick({R.id.btn_retrofit1_async, R.id.btn_retrofit1_obserable, R.id.btn_retrofit2_call, R.id.btn_retrofit2_obserable})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.btn_retrofit1_async:
+                onClickRetrofit1Async();
+                break;
+            case R.id.btn_retrofit1_obserable:
+                onClickRetrofit1Obser();
+                break;
+            case R.id.btn_retrofit2_call:
+                onClickRetrofit2Call();
+                break;
+            case R.id.btn_retrofit2_obserable:
+                onClickRetrofit2Obserable();
+                break;
+        }
+    }
+
+    private void onClickRetrofit2Obserable() {
+        bind(getRetrofit2DataLayer().getApi().observableUserInfo(NAME))
                 .subscribe(new Action1<User>() {
                     @Override
                     public void call(User user) {
-                        tv.setText(user.getLogin() + "");
+                        tv.setText("User login: " + user.getLogin() + " onClickRetrofit2Obserable");
+
                     }
                 }, new Action1<Throwable>() {
                     @Override
@@ -57,59 +82,59 @@ public class DemoActivity extends BaseActivity {
                         throwable.printStackTrace();
                     }
                 });
-   /*     bind(getDataLayer().getApi().observableContributors("square","retrofit"))
-                .subscribe(new Action1<List<Contributor>>() {
-                    @Override
-                    public void call(List<Contributor> contributorList) {
-                        tv.setText(contributorList.get(0).getContributions() + "");
-
-
-                    }
-                }, new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable throwable) {
-                        throwable.printStackTrace();
-                    }
-                });*/
-     /*   bind(getDataLayer().getApi().observableReadme())
-                .subscribe(new Action1<Readme>() {
-                    @Override
-                    public void call(Readme readme) {
-                        tv.setText(readme.getSize() + "");
-
-
-                    }
-                }, new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable throwable) {
-                        throwable.printStackTrace();
-                    }
-                });*/
-
     }
 
-    @OnClick(R.id.btn_call)
-    public void onClickCall() {
-        Call<User> call = getDataLayer().getApi().callUserInfo("sp958857");
-        call.enqueue(new Callback<User>() {
-            @Override
-            public void onResponse(Call<User> call, Response<User> response) {
-                // response.isSuccess() is true if the response code is 2xx
-                if (response.isSuccessful()) {
-                    User user = response.body();
-                    tv.setText(user.getAvatarUrl()+"");
-                } else {
-                    int statusCode = response.code();
+    private void onClickRetrofit2Call() {
+        getRetrofit2DataLayer().getApi().callUserInfo(NAME)
+                .enqueue(new Callback<User>() {
+                    @Override
+                    public void onResponse(Call<User> call, Response<User> response) {
+                        // response.isSuccess() is true if the response code is 2xx
+                        if (response.isSuccessful()) {
+                            User user = response.body();
+                            tv.setText("User login: " + user.getLogin() + " onClickRetrofit2Call");
 
-                    // handle request errors yourself
-                    ResponseBody errorBody = response.errorBody();
-                }
+                        } else {
+                            int statusCode = response.code();
+                            // handle request errors yourself
+                            ResponseBody errorBody = response.errorBody();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<User> call, Throwable throwable) {
+                        // handle execution failures like no internet connectivity
+                        throwable.printStackTrace();
+                    }
+                });
+    }
+
+    private void onClickRetrofit1Obser() {
+        bind(getRetrofit1DataLayer().getApi().observableUserInfo(NAME))
+                .subscribe(new Action1<User>() {
+                    @Override
+                    public void call(User user) {
+                        tv.setText("User login: " + user.getLogin() + " onClickRetrofit1Obser");
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        throwable.printStackTrace();
+                    }
+                });
+    }
+
+    private void onClickRetrofit1Async() {
+        getRetrofit1DataLayer().getApi().asyncUserInfo(NAME, new retrofit.Callback<User>() {
+            @Override
+            public void success(User user, retrofit.client.Response response) {
+                tv.setText("User login: " + user.getLogin() + " onClickRetrofit1Async");
+
             }
 
             @Override
-            public void onFailure(Call<User> call, Throwable throwable) {
-                // handle execution failures like no internet connectivity
-                throwable.printStackTrace();
+            public void failure(RetrofitError error) {
+                Log.e(NAME, error.getMessage());
             }
         });
     }
