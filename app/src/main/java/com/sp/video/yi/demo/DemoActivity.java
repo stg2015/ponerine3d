@@ -13,6 +13,9 @@ import com.sp.video.yi.view.base.BaseActivity;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufAllocator;
+import io.netty.channel.Channel;
 import okhttp3.ResponseBody;
 import retrofit.RetrofitError;
 import retrofit2.Call;
@@ -28,15 +31,15 @@ public class DemoActivity extends BaseActivity {
     private static final String NAME = "sp958857";
 
     @Bind(R.id.tv)
-    TextView     tv;
+    TextView tv;
     @Bind(R.id.btn_retrofit1_async)
-    Button       btnRetrofit1Async;
+    Button btnRetrofit1Async;
     @Bind(R.id.btn_retrofit1_obserable)
-    Button       btnRetrofit1Obserable;
+    Button btnRetrofit1Obserable;
     @Bind(R.id.btn_retrofit2_call)
-    Button       btnRetrofit2Call;
+    Button btnRetrofit2Call;
     @Bind(R.id.btn_retrofit2_obserable)
-    Button       btnRetrofit2Obserable;
+    Button btnRetrofit2Obserable;
     @Bind(R.id.ll_container)
     LinearLayout llContainer;
 
@@ -47,7 +50,25 @@ public class DemoActivity extends BaseActivity {
 
     @Override
     protected void afterCreate(Bundle bundle) {
-
+        TcpClient.INSTANCE.init();
+        TcpClient tcpClient = TcpClient.INSTANCE;
+        try {
+            long t0 = System.nanoTime();
+            byte[] value = null;
+            Channel channel = null;
+            channel = tcpClient.getChannel();
+            value = ("{\"msg_id\":3,\"token\":1}").getBytes();
+            ByteBufAllocator alloc = channel.alloc();
+            ByteBuf buf = alloc.buffer(value.length);
+            buf.writeBytes(value);
+            tcpClient.sendMsg(channel, buf);
+            long t1 = System.nanoTime();
+            System.out.println((t1 - t0) / 1000000.0);
+            Log.d("wwc","tcp end in "+(t1 - t0) / 1000000.0);
+        } catch (Exception e) {
+// TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
     @OnClick({R.id.btn_retrofit1_async, R.id.btn_retrofit1_obserable, R.id.btn_retrofit2_call, R.id.btn_retrofit2_obserable})

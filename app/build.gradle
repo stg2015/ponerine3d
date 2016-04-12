@@ -6,6 +6,10 @@ android {
         applicationId "com.sp.video.yi.demo"
         multiDexEnabled true
     }
+    dexOptions {
+        javaMaxHeapSize "4g"
+        preDexLibraries = false
+    }
     buildTypes {
         release {
             minifyEnabled false
@@ -62,7 +66,7 @@ dependencies {
     compile libs.nineOldAndroid
     compile 'com.fuckhtc:gson:2.1'
 
-    compile 'io.netty:netty:4.0.0.Alpha8'
+    compile 'io.netty:netty-all:4.1.0.CR6'
 //    compile 'io.netty:netty-example:4.1.0.CR7'
 
     //android libs
