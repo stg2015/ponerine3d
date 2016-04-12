@@ -18,19 +18,29 @@ import io.netty.util.ReferenceCountUtil;
 /**
  * Created by Administrator on 2016/4/12.
  */
-public class TcpClientHandler extends ChannelInboundHandlerAdapter{
+public class TcpClientHandler extends ChannelInboundHandlerAdapter {
+
+    @Override
+    public void channelActive(ChannelHandlerContext ctx) throws Exception {
+        super.channelActive(ctx);
+        Log.d("wwc", "channelActive");
+    }
+
+    @Override
+    public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+        super.channelInactive(ctx);
+        Log.d("wwc", "channelInactive");
+    }
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        if (msg instanceof ByteBuf) {
-            ByteBuf buf = (ByteBuf) msg;
-            byte[] dst = new    byte[buf.capacity()];
-            buf.readBytes(dst);
-            Log.d("wwc", "client接收到服务器返回的消息:" + new String(dst));
-            ReferenceCountUtil.release(msg);
-        } else {
-            Log.d("wwc", "error object");
-        }
+        Log.d("wwc", "channelRead");
+        ByteBuf buf = (ByteBuf) msg;
+        byte[] dst = new byte[buf.capacity()];
+        buf.readBytes(dst);
+        Log.d("wwc", "client接收到服务器返回的消息:" + new String(dst));
+        ReferenceCountUtil.release(msg);
+
     }
 
 }
