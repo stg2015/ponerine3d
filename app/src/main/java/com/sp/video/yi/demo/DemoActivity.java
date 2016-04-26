@@ -1,6 +1,7 @@
 package com.sp.video.yi.demo;
 
 import android.os.Bundle;
+import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -8,6 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.sp.video.yi.data.model.User;
+import com.sp.video.yi.data.tcp.TelnetClient;
 import com.sp.video.yi.view.base.BaseActivity;
 
 import butterknife.Bind;
@@ -16,6 +18,8 @@ import butterknife.OnClick;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelFutureListener;
 import okhttp3.ResponseBody;
 import retrofit.RetrofitError;
 import retrofit2.Call;
@@ -48,23 +52,28 @@ public class DemoActivity extends BaseActivity {
         return R.layout.activity_demo;
     }
 
+    public static String HOST = "192.168.31.11";
+    public static int PORT = 7878;
+
     @Override
     protected void afterCreate(Bundle bundle) {
-        TcpClient.INSTANCE.init();
-        TcpClient tcpClient = TcpClient.INSTANCE;
+        TelnetClient tcpClient = TelnetClient.INSTANCE;
         try {
-            long t0 = System.nanoTime();
-            byte[] value = null;
             Channel channel = null;
-            channel = tcpClient.getChannel();
-            value = ("{\"msg_id\":3,\"token\":1}").getBytes();
-            ByteBufAllocator alloc = channel.alloc();
-            ByteBuf buf = alloc.buffer(value.length);
-            buf.writeBytes(value);
-            tcpClient.sendMsg(channel, buf);
-            long t1 = System.nanoTime();
-            System.out.println((t1 - t0) / 1000000.0);
-            Log.d("wwc","tcp end in "+(t1 - t0) / 1000000.0);
+            channel = tcpClient.getChannel(HOST, PORT);
+            tcpClient.sendMsg(channel, "{\"msg_id\":257,\"param\":0,\"token\":0,\"heartbeat\":1}", new ChannelFutureListener() {
+                @Override
+                public void operationComplete(ChannelFuture future) throws Exception {
+                    Looper.prepare();
+                    if (!future.isSuccess()){
+                        future.cause().printStackTrace();
+                        Log.d("wwc", "发送不成功");
+                    }else{
+                        showMessage("发送成功");
+                        Log.d("wwc","发送成功");
+                    }
+                }
+            });
         } catch (Exception e) {
 // TODO Auto-generated catch block
             e.printStackTrace();

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.multidex.MultiDex;
 
 import com.nd.hy.android.hermes.frame.BaseHermesApp;
+import com.sp.video.yi.data.tcp.TelnetClient;
 import com.sp.video.yi.inject.AppComponent;
 import com.sp.video.yi.inject.DaggerYiAppComponent;
 
@@ -24,6 +25,7 @@ public class YiApplication extends BaseHermesApp{
 
     @Override
     protected void afterCreate() {
+        TelnetClient.INSTANCE.init();
 
     }
 
