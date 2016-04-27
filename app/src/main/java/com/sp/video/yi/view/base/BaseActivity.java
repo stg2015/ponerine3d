@@ -13,6 +13,7 @@ import com.nd.hy.android.hermes.frame.view.AbsRxCompatActivity;
 import com.sp.video.yi.common.SchedulerFactory;
 import com.sp.video.yi.data.server.retrofit1.DataLayerRetrofit1Server;
 import com.sp.video.yi.data.server.retrofit2.DataLayerRetrofit2Server;
+import com.sp.video.yi.data.tcp.TelnetClient;
 import com.sp.video.yi.inject.AppComponent;
 
 
@@ -35,6 +36,13 @@ public abstract class BaseActivity extends AbsRxCompatActivity {
     DataLayerRetrofit2Server mDataLayerRetrofit2;
     @Inject
     DataLayerRetrofit1Server mDataLayerRetrofit1;
+    @Inject
+    TelnetClient             mTelnetClient;
+
+
+    public TelnetClient getTelnetClient() {
+        return mTelnetClient;
+    }
 
     public DataLayerRetrofit2Server getRetrofit2DataLayer() {
         return mDataLayerRetrofit2;

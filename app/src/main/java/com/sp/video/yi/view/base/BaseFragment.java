@@ -22,6 +22,7 @@ import com.nd.hy.android.hermes.frame.view.AbsRxHermesFragment;
 import com.sp.video.yi.common.SchedulerFactory;
 import com.sp.video.yi.data.server.retrofit1.DataLayerRetrofit1Server;
 import com.sp.video.yi.data.server.retrofit2.DataLayerRetrofit2Server;
+import com.sp.video.yi.data.tcp.TelnetClient;
 import com.sp.video.yi.inject.AppComponent;
 
 import javax.inject.Inject;
@@ -37,6 +38,13 @@ public abstract class BaseFragment extends AbsRxHermesFragment {
     DataLayerRetrofit2Server mDataLayerRetrofit2;
     @Inject
     DataLayerRetrofit1Server mDataLayerRetrofit1;
+    @Inject
+    TelnetClient mTelnetClient;
+
+
+    public TelnetClient getTelnetClient() {
+        return mTelnetClient;
+    }
 
     public DataLayerRetrofit2Server getRetrofit2DataLayer() {
         return mDataLayerRetrofit2;
@@ -45,6 +53,8 @@ public abstract class BaseFragment extends AbsRxHermesFragment {
     public DataLayerRetrofit1Server getRetrofit1DataLayer() {
         return mDataLayerRetrofit1;
     }
+
+
 
     protected View mRootView;
     protected static final int PAGE_SIZE = 20;

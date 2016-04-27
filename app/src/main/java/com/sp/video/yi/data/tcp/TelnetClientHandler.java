@@ -15,6 +15,8 @@
  */
 package com.sp.video.yi.data.tcp;
 
+import android.util.Log;
+
 import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -27,6 +29,8 @@ public class TelnetClientHandler extends SimpleChannelInboundHandler<String> {
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, String msg) throws Exception {
+        Log.d("wwc", "Thread: channelRead0 id = " + Thread.currentThread().getId());
+        Log.d("wwc", "channelRead0 msg = " + msg);
         System.err.println(msg);
     }
 

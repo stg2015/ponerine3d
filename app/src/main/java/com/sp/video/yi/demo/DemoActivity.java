@@ -25,7 +25,9 @@ import retrofit.RetrofitError;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import rx.Observable;
 import rx.functions.Action1;
+import rx.functions.Func0;
 
 /**
  * Created by Weichao Wang on 2016/4/11.
@@ -57,27 +59,44 @@ public class DemoActivity extends BaseActivity {
 
     @Override
     protected void afterCreate(Bundle bundle) {
-        TelnetClient tcpClient = TelnetClient.INSTANCE;
-        try {
-            Channel channel = null;
-            channel = tcpClient.getChannel(HOST, PORT);
-            tcpClient.sendMsg(channel, "{\"msg_id\":257,\"param\":0,\"token\":0,\"heartbeat\":1}", new ChannelFutureListener() {
-                @Override
-                public void operationComplete(ChannelFuture future) throws Exception {
-                    Looper.prepare();
-                    if (!future.isSuccess()){
-                        future.cause().printStackTrace();
-                        Log.d("wwc", "发送不成功");
-                    }else{
-                        showMessage("发送成功");
-                        Log.d("wwc","发送成功");
-                    }
-                }
-            });
-        } catch (Exception e) {
+        Log.d("wwc", "Thread: afterCreate id = " + Thread.currentThread().getId());
+        bind(Observable.defer(new Func0<Observable<Object>>() {
+            @Override
+            public Observable<Object> call() {
+                try {
+                    Channel channel = getTelnetClient().getChannel(HOST, PORT);
+                    getTelnetClient().sendMsg(channel, "{\"msg_id\":257,\"param\":0,\"token\":0,\"heartbeat\":1}", new ChannelFutureListener() {
+                        @Override
+                        public void operationComplete(ChannelFuture future) throws Exception {
+                            Log.d("wwc", "Thread: operationComplete id = " + Thread.currentThread().getId());
+                            Looper.prepare();
+                            if (!future.isSuccess()) {
+                                future.cause().printStackTrace();
+                                Log.d("wwc", "发送不成功");
+                            } else {
+                                showMessage("发送成功");
+                                Log.d("wwc", "发送成功");
+                            }
+                        }
+                    });
+                } catch (Exception e) {
 // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+                    e.printStackTrace();
+                }
+                return null;
+            }
+        })).subscribe(new Action1<Object>() {
+            @Override
+            public void call(Object o) {
+
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+
+            }
+        });
+
     }
 
     @OnClick({R.id.btn_retrofit1_async, R.id.btn_retrofit1_obserable, R.id.btn_retrofit2_call, R.id.btn_retrofit2_obserable})

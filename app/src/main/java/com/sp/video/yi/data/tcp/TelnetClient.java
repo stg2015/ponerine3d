@@ -13,12 +13,10 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 /**
  * Created by Administrator on 2016/4/12.
  */
-public enum TelnetClient {
-    INSTANCE;
+public class TelnetClient {
     public static Bootstrap bootstrap;
 
-
-    public void init(){
+    public TelnetClient(){
         bootstrap = getBootstrap();
     }
     /**
@@ -42,6 +40,7 @@ public enum TelnetClient {
     public Channel getChannel(String host,int port) {
         Channel channel = null;
         try {
+            Log.d("wwc","Thread: getChannel id = "+Thread.currentThread().getId());
             channel = bootstrap.connect(host, port).sync().channel();
         } catch (Exception e) {
            Log.e("wwc", String.format("连接Server(IP[%s],PORT[%s])失败 ", host, port) + e.getMessage());
