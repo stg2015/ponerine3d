@@ -4,6 +4,7 @@ import android.os.Looper;
 import android.util.Log;
 
 
+import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
 import io.netty.bootstrap.Bootstrap;
@@ -20,7 +21,7 @@ import io.netty.channel.socket.nio.NioSocketChannel;
  */
 public class TelnetClient {
     public static Bootstrap bootstrap;
-    private       boolean   closed;
+    public static EventLoopGroup group;
 
     public TelnetClient() {
         bootstrap = getBootstrap();
@@ -32,10 +33,7 @@ public class TelnetClient {
      * @return
      */
     public Bootstrap getBootstrap() {
-        if (null != bootstrap) {
-            return bootstrap;
-        }
-        EventLoopGroup group = new NioEventLoopGroup();
+        group = new NioEventLoopGroup();
         Bootstrap b = new Bootstrap();
         b.group(group)
                 .channel(NioSocketChannel.class)
@@ -46,15 +44,13 @@ public class TelnetClient {
         return b;
     }
 
-    public void close(Channel channel) {
-        closed = true;
-        channel.eventLoop().shutdownGracefully();
+    public void closeAllChannel() {
+        group.shutdownGracefully();
     }
 
     public Channel connectChannel(String host, int port) {
-        closed = false;
-        if (closed) {
-            return null;
+        if (null == bootstrap || null ==group || group.isShutdown()) {
+            bootstrap = getBootstrap();
         }
         Channel channel = null;
         try {
@@ -62,10 +58,15 @@ public class TelnetClient {
             channel = bootstrap.connect(host, port).addListener(new ChannelFutureListener() {
                 public void operationComplete(ChannelFuture f) throws Exception {
                     if (f.isSuccess()) {
-                        Log.e("wwc", String.format("连接Server(IP[%s],PORT[%s])成功 ", host, port));
+                        Log.e("wwc", String.format("连接Server(IP[%s],PORT[%s])成功: ", host, port) + f.channel().toString() + " channel id = " + f.channel().id());
                     } else {
                         Log.e("wwc", String.format("连接Server(IP[%s],PORT[%s])失败,重试中 ", host, port));
-                        f.channel().eventLoop().schedule(() -> connectChannel(host,port), 1, TimeUnit.SECONDS);
+                        f.channel().eventLoop().schedule(new Callable<Channel>() {
+                            @Override
+                            public Channel call() throws Exception {
+                                return connectChannel(host, port);
+                            }
+                        }, 1, TimeUnit.SECONDS);
                     }
                 }
             }).sync().channel();

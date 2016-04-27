@@ -68,7 +68,7 @@ public class YiTestActivity extends BaseActivity {
                 sendMsg();
                 break;
             case R.id.btn_close:
-                getTelnetClient().close(channel);
+                getTelnetClient().closeAllChannel();
                 break;
         }
 
