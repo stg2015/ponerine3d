@@ -9,4 +9,10 @@
         android:layout_width="88dp"
         android:layout_height="44dp"
         android:text="retry"/>
+
+    <Button
+        android:id="@+id/btn_close"
+        android:layout_width="88dp"
+        android:layout_height="44dp"
+        android:text="close"/>
 </LinearLayout>

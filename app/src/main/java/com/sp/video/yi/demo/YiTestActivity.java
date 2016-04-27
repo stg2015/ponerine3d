@@ -1,18 +1,15 @@
 package com.sp.video.yi.demo;
 
 import android.os.Bundle;
-import android.os.Looper;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 
 import com.sp.video.yi.view.base.BaseActivity;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.netty.channel.Channel;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelFutureListener;
 import rx.Observable;
 import rx.functions.Action1;
 import rx.functions.Func0;
@@ -37,27 +34,14 @@ public class YiTestActivity extends BaseActivity {
         sendMsg();
 
     }
-
-    public void sendMsg(){
+    Channel channel;
+    public void sendMsg() {
         bind(Observable.defer(new Func0<Observable<Object>>() {
             @Override
             public Observable<Object> call() {
                 try {
-                    Channel channel = getTelnetClient().getChannel(HOST, PORT);
-                    getTelnetClient().sendMsg(channel, "{\"msg_id\":257,\"param\":0,\"token\":0,\"heartbeat\":1}", new ChannelFutureListener() {
-                        @Override
-                        public void operationComplete(ChannelFuture future) throws Exception {
-                            Log.d("wwc", "Thread: operationComplete id = " + Thread.currentThread().getId());
-                            Looper.prepare();
-                            if (!future.isSuccess()) {
-                                future.cause().printStackTrace();
-                                Log.d("wwc", "发送不成功");
-                            } else {
-                                showMessage("发送成功");
-                                Log.d("wwc", "发送成功");
-                            }
-                        }
-                    });
+                    channel  = getTelnetClient().connectChannel(HOST, PORT);
+                    getTelnetClient().sendMsg(channel, "{\"msg_id\":257,\"param\":0,\"token\":0,\"heartbeat\":1}");
                 } catch (Exception e) {
 // TODO Auto-generated catch block
                     e.printStackTrace();
@@ -77,8 +61,16 @@ public class YiTestActivity extends BaseActivity {
         });
     }
 
-    @OnClick(R.id.btn_retry)
-    public void onClick() {
-        sendMsg();
+    @OnClick({R.id.btn_retry, R.id.btn_close})
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.btn_retry:
+                sendMsg();
+                break;
+            case R.id.btn_close:
+                getTelnetClient().close(channel);
+                break;
+        }
+
     }
 }

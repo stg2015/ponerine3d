@@ -1,10 +1,14 @@
 package com.sp.video.yi.data.tcp;
 
+import android.os.Looper;
 import android.util.Log;
 
 
+import java.util.concurrent.TimeUnit;
+
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
@@ -16,6 +20,7 @@ import io.netty.channel.socket.nio.NioSocketChannel;
  */
 public class TelnetClient {
     public static Bootstrap bootstrap;
+    private       boolean   closed;
 
     public TelnetClient() {
         bootstrap = getBootstrap();
@@ -34,28 +39,58 @@ public class TelnetClient {
         Bootstrap b = new Bootstrap();
         b.group(group)
                 .channel(NioSocketChannel.class)
-                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 5000)
+                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 5000)//5秒超时
                 .handler(new TelnetClientInitializer());
 // b.option(ChannelOption.SO_KEEPALIVE, true);
+        bootstrap = b;
         return b;
     }
 
-    public Channel getChannel(String host, int port) {
+    public void close(Channel channel) {
+        closed = true;
+        channel.eventLoop().shutdownGracefully();
+    }
+
+    public Channel connectChannel(String host, int port) {
+        closed = false;
+        if (closed) {
+            return null;
+        }
         Channel channel = null;
         try {
-            Log.d("wwc", "Thread: getChannel id = " + Thread.currentThread().getId());
-            channel = bootstrap.connect(host, port).sync().channel();
+            Log.d("wwc", "Thread: connectChannel id = " + Thread.currentThread().getId());
+            channel = bootstrap.connect(host, port).addListener(new ChannelFutureListener() {
+                public void operationComplete(ChannelFuture f) throws Exception {
+                    if (f.isSuccess()) {
+                        Log.e("wwc", String.format("连接Server(IP[%s],PORT[%s])成功 ", host, port));
+                    } else {
+                        Log.e("wwc", String.format("连接Server(IP[%s],PORT[%s])失败,重试中 ", host, port));
+                        f.channel().eventLoop().schedule(() -> connectChannel(host,port), 1, TimeUnit.SECONDS);
+                    }
+                }
+            }).sync().channel();
         } catch (Exception e) {
-            Log.e("wwc", String.format("连接Server(IP[%s],PORT[%s])失败 ", host, port) + e.getMessage());
+            e.printStackTrace();
             return null;
         }
         return channel;
     }
 
-    public void sendMsg(Channel channel, String msg, ChannelFutureListener listener) throws Exception {
+    public void sendMsg(Channel channel, String msg) throws Exception {
         if (channel != null) {
-            channel.writeAndFlush(msg).addListener(listener);
-            ;
+            channel.writeAndFlush(msg).addListener(new ChannelFutureListener() {
+                @Override
+                public void operationComplete(ChannelFuture future) throws Exception {
+                    Log.d("wwc", "Thread: sendMsg id = " + Thread.currentThread().getId());
+                    Looper.prepare();
+                    if (!future.isSuccess()) {
+                        future.cause().printStackTrace();
+                        Log.d("wwc", "发送不成功");
+                    } else {
+                        Log.d("wwc", "发送成功");
+                    }
+                }
+            });
         } else {
             Log.e("wwc", "消息发送失败,连接尚未建立!");
         }

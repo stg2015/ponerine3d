@@ -15,23 +15,37 @@
  */
 package com.sp.video.yi.data.tcp;
 
+import android.util.Log;
+
+import java.net.InetSocketAddress;
+import java.util.concurrent.TimeUnit;
+
+import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelFutureListener;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
-import io.netty.handler.ssl.SslContext;
+import io.netty.handler.timeout.IdleStateHandler;
 
 /**
  * Creates a newly configured {@link ChannelPipeline} for a new channel.
  */
 public class TelnetClientInitializer extends ChannelInitializer<SocketChannel> {
+    private static final int READ_IDEL_TIME_OUT  = 5; // 读超时
+    private static final int WRITE_IDEL_TIME_OUT = 10;// 写超时
+    private static final int ALL_IDEL_TIME_OUT   = 10; // 所有超时
 
     private static final StringDecoder DECODER = new StringDecoder();
     private static final StringEncoder ENCODER = new StringEncoder();
 
-    private static final TelnetClientHandler CLIENT_HANDLER = new TelnetClientHandler();
+    private static final TelnetClientHandler TELNET_HANDLER     = new TelnetClientHandler();
 
+    private static final String TELNET     = "telnet_handler";
+    private static final String IDLE_STATE = "idle_state_handler";
 
     public TelnetClientInitializer() {
     }
@@ -45,6 +59,10 @@ public class TelnetClientInitializer extends ChannelInitializer<SocketChannel> {
         pipeline.addLast(ENCODER);
 
         // and then business logic.
-        pipeline.addLast(CLIENT_HANDLER);
+        pipeline.addLast(IDLE_STATE,  new IdleStateHandler(READ_IDEL_TIME_OUT,
+                WRITE_IDEL_TIME_OUT, ALL_IDEL_TIME_OUT, TimeUnit.SECONDS));
+        pipeline.addLast(TELNET, TELNET_HANDLER);
     }
+
+
 }

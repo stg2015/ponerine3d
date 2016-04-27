@@ -18,6 +18,7 @@ import io.netty.util.ReferenceCountUtil;
 /**
  * Created by Administrator on 2016/4/12.
  */
+@Deprecated
 public class TcpClientHandler extends ChannelInboundHandlerAdapter {
 
     @Override
