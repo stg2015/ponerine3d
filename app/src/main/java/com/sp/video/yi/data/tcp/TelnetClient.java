@@ -6,6 +6,7 @@ import android.util.Log;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFutureListener;
+import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
@@ -16,44 +17,47 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 public class TelnetClient {
     public static Bootstrap bootstrap;
 
-    public TelnetClient(){
+    public TelnetClient() {
         bootstrap = getBootstrap();
     }
+
     /**
      * 初始化Bootstrap
      *
      * @return
      */
     public Bootstrap getBootstrap() {
-        if(null != bootstrap){
+        if (null != bootstrap) {
             return bootstrap;
         }
         EventLoopGroup group = new NioEventLoopGroup();
         Bootstrap b = new Bootstrap();
         b.group(group)
                 .channel(NioSocketChannel.class)
+                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 5000)
                 .handler(new TelnetClientInitializer());
 // b.option(ChannelOption.SO_KEEPALIVE, true);
         return b;
     }
 
-    public Channel getChannel(String host,int port) {
+    public Channel getChannel(String host, int port) {
         Channel channel = null;
         try {
-            Log.d("wwc","Thread: getChannel id = "+Thread.currentThread().getId());
+            Log.d("wwc", "Thread: getChannel id = " + Thread.currentThread().getId());
             channel = bootstrap.connect(host, port).sync().channel();
         } catch (Exception e) {
-           Log.e("wwc", String.format("连接Server(IP[%s],PORT[%s])失败 ", host, port) + e.getMessage());
+            Log.e("wwc", String.format("连接Server(IP[%s],PORT[%s])失败 ", host, port) + e.getMessage());
             return null;
         }
         return channel;
     }
 
-    public void sendMsg(Channel channel, String msg,ChannelFutureListener listener) throws Exception {
+    public void sendMsg(Channel channel, String msg, ChannelFutureListener listener) throws Exception {
         if (channel != null) {
             channel.writeAndFlush(msg).addListener(listener);
+            ;
         } else {
-            Log.e("wwc","消息发送失败,连接尚未建立!");
+            Log.e("wwc", "消息发送失败,连接尚未建立!");
         }
     }
 

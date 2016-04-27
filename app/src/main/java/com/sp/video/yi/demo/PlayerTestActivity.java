@@ -16,7 +16,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, PlayerView.OnChangeListener {
+public class PlayerTestActivity extends AppCompatActivity implements View.OnClickListener, PlayerView.OnChangeListener {
 
     @Bind(R.id.toolbar)
     Toolbar    toolbar;
@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_player_test);
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
 

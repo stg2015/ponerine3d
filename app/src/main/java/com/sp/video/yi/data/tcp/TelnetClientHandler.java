@@ -29,14 +29,45 @@ public class TelnetClientHandler extends SimpleChannelInboundHandler<String> {
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, String msg) throws Exception {
-        Log.d("wwc", "Thread: channelRead0 id = " + Thread.currentThread().getId());
-        Log.d("wwc", "channelRead0 msg = " + msg);
-        System.err.println(msg);
+        Log.d("wwc", "Thread: channelRead0 id = " + Thread.currentThread().getId() + "  msg = " + msg);
     }
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
         cause.printStackTrace();
+        Log.d("wwc", "exceptionCaught "+cause.getMessage());
         ctx.close();
     }
+
+    @Override
+    public void channelRegistered(ChannelHandlerContext ctx) throws Exception {
+        super.channelRegistered(ctx);
+        Log.d("wwc", "channelRegistered");
+    }
+
+    @Override
+    public void channelUnregistered(ChannelHandlerContext ctx) throws Exception {
+        super.channelUnregistered(ctx);
+        Log.d("wwc", "channelUnregistered");
+    }
+
+    @Override
+    public void channelActive(ChannelHandlerContext ctx) throws Exception {
+        super.channelActive(ctx);
+        Log.d("wwc", "channelActive");
+    }
+
+    @Override
+    public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+        super.channelInactive(ctx);
+        Log.d("wwc", "channelInactive");
+    }
+
+    @Override
+    public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
+        super.channelReadComplete(ctx);
+        Log.d("wwc", "channelReadComplete");
+    }
+
+
 }
