@@ -65,7 +65,7 @@ public class XiaoYiCameraConnection implements Serializable, IActionMsg, IMsgRes
         switch (responsseEntry.getMsg()){
             case GET_TOKEN:
                 this.token = responsseEntry.getParam();
-                Log.d("wwc","Get token = "+token);
+                Log.d("wwc","【Get token】 = "+token);
                 break;
         }
     }

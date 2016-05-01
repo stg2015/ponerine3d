@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.nd.hy.android.commons.data.ObjectMapperUtils;
 
@@ -17,6 +18,7 @@ import com.nd.hy.android.commons.data.ObjectMapperUtils;
         getterVisibility = JsonAutoDetect.Visibility.NONE,
         setterVisibility = JsonAutoDetect.Visibility.NONE)
 @JsonIgnoreProperties(ignoreUnknown = true)
+@JsonPropertyOrder(value={"msg_id","param"})
 public class BaseMsg {
     @JsonProperty("msg_id")
     public Integer msgId;

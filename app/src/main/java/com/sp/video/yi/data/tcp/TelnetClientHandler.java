@@ -45,7 +45,7 @@ public class TelnetClientHandler extends SimpleChannelInboundHandler<String> {
     protected void channelRead0(ChannelHandlerContext ctx, String msg) throws Exception {
         InetSocketAddress inetSocketAddress = ((NioSocketChannel) ctx.channel()).remoteAddress();
         String connectionId = inetSocketAddress.getAddress().getHostAddress()+":"+inetSocketAddress.getPort();
-        Log.d("wwc", "Thread: channelRead0 id = " + Thread.currentThread().getId() + "  msg = " + msg+"   from "+connectionId);
+        Log.d("wwc", "Thread: channelRead0 id = " + Thread.currentThread().getId() + "  msg = " + msg + "   from " + connectionId);
         ConnectionResponseProvider.INSTANCE.onMsgResponse(connectionId, msg);
     }
 
@@ -65,6 +65,11 @@ public class TelnetClientHandler extends SimpleChannelInboundHandler<String> {
     @Override
     public void channelUnregistered(ChannelHandlerContext ctx) throws Exception {
         Log.d("wwc", "channelUnregistered");
+        InetSocketAddress inetSocketAddress = ((NioSocketChannel) ctx.channel()).remoteAddress();
+        if(null != inetSocketAddress){
+            String connectionId = inetSocketAddress.getAddress().getHostAddress() + ":" + inetSocketAddress.getPort();
+            ConnectionResponseProvider.INSTANCE.deleteConnection(connectionId);
+        }
         super.channelUnregistered(ctx);
     }
 
@@ -77,6 +82,11 @@ public class TelnetClientHandler extends SimpleChannelInboundHandler<String> {
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
         Log.d("wwc", "channelInactive");
+        InetSocketAddress inetSocketAddress = ((NioSocketChannel) ctx.channel()).remoteAddress();
+        if(null != inetSocketAddress){
+            String connectionId = inetSocketAddress.getAddress().getHostAddress() + ":" + inetSocketAddress.getPort();
+            ConnectionResponseProvider.INSTANCE.deleteConnection(connectionId);
+        }
         super.channelInactive(ctx);
     }
 
@@ -91,11 +101,11 @@ public class TelnetClientHandler extends SimpleChannelInboundHandler<String> {
         if (evt instanceof IdleStateEvent) {
             IdleStateEvent e = (IdleStateEvent) evt;
             if (e.state() == IdleState.READER_IDLE) {
-                Log.d("wwc", "userEventTriggered = " + "READ");
+//                Log.d("wwc", "userEventTriggered = " + "READ");
 //                ctx.close();
             } else if (e.state() == IdleState.WRITER_IDLE) {
                 Log.d("wwc", "userEventTriggered = " + "WRIT");
-                ctx.writeAndFlush("{\"msg_id\":257,\"param\":0,\"token\":0,\"heartbeat\":1}");
+                ctx.writeAndFlush(new GetTokenMsg().toString());
             }
         } else {
             super.userEventTriggered(ctx, evt);

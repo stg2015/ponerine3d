@@ -51,6 +51,7 @@ public class TelnetClient {
     }
 
     public void closeAllChannel() {
+        ConnectionResponseProvider.INSTANCE.clearCache();
         group.shutdownGracefully();
     }
 
@@ -60,28 +61,32 @@ public class TelnetClient {
      * @return
      * @throws Exception
      */
-    public Channel connectChannel(XiaoYiCameraConnection connection) throws Exception{
-        if(ConnectionResponseProvider.INSTANCE.alreadyHasConnection(connection)){
-            throw new RuntimeException("端口已近建立连接，请勿重复连接");
-        }
+    public Channel connectChannel(XiaoYiCameraConnection connection,boolean isReconnectBySelf) throws Exception{
+
+        //init bootstrap
         if (null == bootstrap || null ==group || group.isShutdown()) {
             bootstrap = getBootstrap();
         }
+        //connection cache
+        if(!isReconnectBySelf && ConnectionResponseProvider.INSTANCE.alreadyHasConnection(connection)){
+            throw new RuntimeException("端口连接使用中，请勿重复连接");
+        }else{
+            ConnectionResponseProvider.INSTANCE.cacheConnection(connection);
+        }
+
         Channel channel = null;
 //        try {
             Log.d("wwc", "Thread: connectChannel id = " + Thread.currentThread().getId());
             channel = bootstrap.connect(connection.getIpAddress(), connection.getPort()).addListener(new ChannelFutureListener() {
                 public void operationComplete(ChannelFuture f) throws Exception {
                     if (f.isSuccess()) {
-                        ConnectionResponseProvider.INSTANCE.cacheConnection(connection);
                         Log.e("wwc", String.format("连接Server(IP[%s],PORT[%s])成功: ", connection.getIpAddress(), connection.getPort()) + f.channel().toString() + " channel id = " + f.channel().id());
                     } else {
-                        ConnectionResponseProvider.INSTANCE.deleteConnection(connection);
                         Log.e("wwc", String.format("连接Server(IP[%s],PORT[%s])失败,重试中 ", connection.getIpAddress(), connection.getPort()));
                         f.channel().eventLoop().schedule(new Callable<Channel>() {
                             @Override
                             public Channel call() throws Exception {
-                                return connectChannel(connection);
+                                return connectChannel(connection,true);
                             }
                         }, 1, TimeUnit.SECONDS);
                     }

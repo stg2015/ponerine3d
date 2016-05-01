@@ -46,7 +46,7 @@ public class YiTestActivity extends BaseActivity {
             @Override
             public Observable<Object> call() {
                 try {
-                    channel  = getTelnetClient().connectChannel(testCameta);
+                    channel  = getTelnetClient().connectChannel(testCameta,false);
                     getTelnetClient().sendMsg(channel, testCameta.getAccessTokenMsg());
                 } catch (Exception e) {
 // TODO Auto-generated catch block

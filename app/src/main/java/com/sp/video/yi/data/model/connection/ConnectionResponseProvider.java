@@ -23,6 +23,11 @@ public enum ConnectionResponseProvider {
             cacheConnections.remove(xiaoYiCameraConnection.getId());
         }
     }
+    public void deleteConnection(String xiaoYiCameraConnection){
+        if(cacheConnections.containsKey(xiaoYiCameraConnection)){
+            cacheConnections.remove(xiaoYiCameraConnection);
+        }
+    }
 
     public void cacheConnection(XiaoYiCameraConnection xiaoYiCameraConnection){
         cacheConnections.put(xiaoYiCameraConnection.getId(), xiaoYiCameraConnection);
@@ -41,5 +46,13 @@ public enum ConnectionResponseProvider {
     public boolean alreadyHasConnection(XiaoYiCameraConnection connection) {
         boolean alreadyHasConnection = ConnectionResponseProvider.cacheConnections.containsKey(connection.getId());
         return alreadyHasConnection;
+    }
+    public boolean alreadyHasConnection(String connection) {
+        boolean alreadyHasConnection = ConnectionResponseProvider.cacheConnections.containsKey(connection);
+        return alreadyHasConnection;
+    }
+
+    public void clearCache() {
+        cacheConnections.clear();
     }
 }

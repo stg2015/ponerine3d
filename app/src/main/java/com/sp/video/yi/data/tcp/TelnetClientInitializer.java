@@ -36,7 +36,7 @@ import io.netty.handler.timeout.IdleStateHandler;
  */
 public class TelnetClientInitializer extends ChannelInitializer<SocketChannel> {
     private static final int READ_IDEL_TIME_OUT  = 5; // 读超时
-    private static final int WRITE_IDEL_TIME_OUT = 10;// 写超时
+    private static final int WRITE_IDEL_TIME_OUT = 5;// 写超时
     private static final int ALL_IDEL_TIME_OUT   = 10; // 所有超时
 
     private static final StringDecoder DECODER = new StringDecoder();
