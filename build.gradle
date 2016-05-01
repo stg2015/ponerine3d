@@ -1,4 +1,4 @@
-apply from: "${CONFIG_URL}/loadConfig.gradle"
+//apply from: "${CONFIG_URL}/loadConfig.gradle"
 
 subprojects { project ->
     group = GROUP
@@ -32,7 +32,27 @@ subprojects { project ->
 
     configurations.all { resolutionStrategy.cacheChangingModulesFor 0, 'seconds' }
 }
+allprojects {
+    ext {
+        getPropertyOrDefault = { key, defValue ->
+            if (project.getProperties().containsKey(key)) {
+                return project.getProperties().get(key)
+            } else {
+                return defValue
+            }
+        }
 
+        downloadFile = { localFile, url ->
+            if (!localFile.exists()) {
+                new URL(url).withInputStream { i -> localFile.withOutputStream { it << i } }
+            }
+        }
+
+        cacheConfigsDir = getPropertyOrDefault("CONFIG_CACHE", ".configs")
+        cacheConfigs = "${rootDir}/${cacheConfigsDir}"
+        remoteConfigsUrl = "${CONFIG_URL}/"
+    }
+}
 task clean(type: Delete) {
     delete rootProject.buildDir
 }

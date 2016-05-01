@@ -17,9 +17,15 @@ package com.sp.video.yi.data.tcp;
 
 import android.util.Log;
 
+import com.sp.video.yi.data.model.GetTokenMsg;
+import com.sp.video.yi.data.model.connection.ConnectionResponseProvider;
+
+import java.net.InetSocketAddress;
+
 import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
 
@@ -29,9 +35,18 @@ import io.netty.handler.timeout.IdleStateEvent;
 @Sharable
 public class TelnetClientHandler extends SimpleChannelInboundHandler<String> {
 
+    /**
+     * 通过连接id(ip:port),回调接口
+     * @param ctx
+     * @param msg
+     * @throws Exception
+     */
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, String msg) throws Exception {
-        Log.d("wwc", "Thread: channelRead0 id = " + Thread.currentThread().getId() + "  msg = " + msg);
+        InetSocketAddress inetSocketAddress = ((NioSocketChannel) ctx.channel()).remoteAddress();
+        String connectionId = inetSocketAddress.getAddress().getHostAddress()+":"+inetSocketAddress.getPort();
+        Log.d("wwc", "Thread: channelRead0 id = " + Thread.currentThread().getId() + "  msg = " + msg+"   from "+connectionId);
+        ConnectionResponseProvider.INSTANCE.onMsgResponse(connectionId, msg);
     }
 
     @Override

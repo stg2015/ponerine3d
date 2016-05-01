@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import com.sp.video.yi.data.model.connection.XiaoYiCameraConnection;
 import com.sp.video.yi.view.base.BaseActivity;
 
 import butterknife.Bind;
@@ -18,8 +19,12 @@ import rx.functions.Func0;
  * Created by Weichao Wang on 2016/4/27.
  */
 public class YiTestActivity extends BaseActivity {
-    public static String HOST = "192.168.31.11";
+    public static String HOST = "192.168.31.15";
     public static int    PORT = 7878;
+    XiaoYiCameraConnection testCameta;
+    Channel channel;
+
+
     @Bind(R.id.btn_retry)
     Button btnRetry;
 
@@ -31,20 +36,22 @@ public class YiTestActivity extends BaseActivity {
     @Override
     protected void afterCreate(Bundle bundle) {
         Log.d("wwc", "Thread: afterCreate id = " + Thread.currentThread().getId());
+
+        testCameta = new XiaoYiCameraConnection(HOST,PORT);
         sendMsg();
 
     }
-    Channel channel;
     public void sendMsg() {
         bind(Observable.defer(new Func0<Observable<Object>>() {
             @Override
             public Observable<Object> call() {
                 try {
-                    channel  = getTelnetClient().connectChannel(HOST, PORT);
-                    getTelnetClient().sendMsg(channel, "{\"msg_id\":257,\"param\":0,\"token\":0,\"heartbeat\":1}");
+                    channel  = getTelnetClient().connectChannel(testCameta);
+                    getTelnetClient().sendMsg(channel, testCameta.getAccessTokenMsg());
                 } catch (Exception e) {
 // TODO Auto-generated catch block
                     e.printStackTrace();
+                    throw new RuntimeException(e);
                 }
                 return null;
             }
@@ -56,7 +63,7 @@ public class YiTestActivity extends BaseActivity {
         }, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-
+                showMessage(throwable.getMessage());
             }
         });
     }

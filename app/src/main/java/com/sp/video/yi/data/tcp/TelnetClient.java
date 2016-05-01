@@ -4,6 +4,10 @@ import android.os.Looper;
 import android.util.Log;
 
 
+import com.sp.video.yi.data.model.BaseMsg;
+import com.sp.video.yi.data.model.connection.ConnectionResponseProvider;
+import com.sp.video.yi.data.model.connection.XiaoYiCameraConnection;
+
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
@@ -23,6 +27,7 @@ public class TelnetClient {
     public static Bootstrap bootstrap;
     public static EventLoopGroup group;
 
+
     public TelnetClient() {
         bootstrap = getBootstrap();
     }
@@ -33,6 +38,7 @@ public class TelnetClient {
      * @return
      */
     public Bootstrap getBootstrap() {
+        ConnectionResponseProvider.INSTANCE.init();
         group = new NioEventLoopGroup();
         Bootstrap b = new Bootstrap();
         b.group(group)
@@ -48,47 +54,64 @@ public class TelnetClient {
         group.shutdownGracefully();
     }
 
-    public Channel connectChannel(String host, int port) {
+    /**
+     * 连接成功后,缓存连接
+     * @param connection
+     * @return
+     * @throws Exception
+     */
+    public Channel connectChannel(XiaoYiCameraConnection connection) throws Exception{
+        if(ConnectionResponseProvider.INSTANCE.alreadyHasConnection(connection)){
+            throw new RuntimeException("端口已近建立连接，请勿重复连接");
+        }
         if (null == bootstrap || null ==group || group.isShutdown()) {
             bootstrap = getBootstrap();
         }
         Channel channel = null;
-        try {
+//        try {
             Log.d("wwc", "Thread: connectChannel id = " + Thread.currentThread().getId());
-            channel = bootstrap.connect(host, port).addListener(new ChannelFutureListener() {
+            channel = bootstrap.connect(connection.getIpAddress(), connection.getPort()).addListener(new ChannelFutureListener() {
                 public void operationComplete(ChannelFuture f) throws Exception {
                     if (f.isSuccess()) {
-                        Log.e("wwc", String.format("连接Server(IP[%s],PORT[%s])成功: ", host, port) + f.channel().toString() + " channel id = " + f.channel().id());
+                        ConnectionResponseProvider.INSTANCE.cacheConnection(connection);
+                        Log.e("wwc", String.format("连接Server(IP[%s],PORT[%s])成功: ", connection.getIpAddress(), connection.getPort()) + f.channel().toString() + " channel id = " + f.channel().id());
                     } else {
-                        Log.e("wwc", String.format("连接Server(IP[%s],PORT[%s])失败,重试中 ", host, port));
+                        ConnectionResponseProvider.INSTANCE.deleteConnection(connection);
+                        Log.e("wwc", String.format("连接Server(IP[%s],PORT[%s])失败,重试中 ", connection.getIpAddress(), connection.getPort()));
                         f.channel().eventLoop().schedule(new Callable<Channel>() {
                             @Override
                             public Channel call() throws Exception {
-                                return connectChannel(host, port);
+                                return connectChannel(connection);
                             }
                         }, 1, TimeUnit.SECONDS);
                     }
                 }
             }).sync().channel();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return null;
+//        }
         return channel;
     }
 
-    public void sendMsg(Channel channel, String msg) throws Exception {
+    /**
+     * 通过通道，发送消息，在{@link TelnetClientHandler}中处理返回Response
+     * @param channel
+     * @param msg
+     * @throws Exception
+     */
+    public void sendMsg(Channel channel, BaseMsg msg) throws Exception {
         if (channel != null) {
-            channel.writeAndFlush(msg).addListener(new ChannelFutureListener() {
+            channel.writeAndFlush(msg.toString()).addListener(new ChannelFutureListener() {
                 @Override
                 public void operationComplete(ChannelFuture future) throws Exception {
-                    Log.d("wwc", "Thread: sendMsg id = " + Thread.currentThread().getId());
+                    Log.d("wwc", " Thread: sendMsg  id = " + Thread.currentThread().getId());
                     Looper.prepare();
                     if (!future.isSuccess()) {
                         future.cause().printStackTrace();
-                        Log.d("wwc", "发送不成功");
+                        Log.d("wwc", "sendMsg failed "+future.cause().getMessage());
                     } else {
-                        Log.d("wwc", "发送成功");
+                        Log.d("wwc", "sendMsg successed");
                     }
                 }
             });

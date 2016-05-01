@@ -16,7 +16,7 @@ import rx.schedulers.Schedulers;
  */
 public class SchedulerFactory {
 
-    private static final int MAX_THREAD_NUM = 3;
+    private static final int MAX_THREAD_NUM = 5;
 
     private static ExecutorService sExecutors =
             new BackgroundThreadExecutor(MAX_THREAD_NUM, "SchedulerFactory IO - ");
