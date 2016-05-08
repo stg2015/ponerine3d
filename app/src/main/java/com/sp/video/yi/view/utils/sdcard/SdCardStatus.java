@@ -2,8 +2,8 @@ package com.sp.video.yi.view.utils.sdcard;
 
 import android.content.Context;
 import android.os.Environment;
+import android.util.Log;
 
-import com.nd.hy.android.commons.util.Ln;
 
 import java.io.File;
 
@@ -26,7 +26,7 @@ public class SdCardStatus {
         String sdCardPath = null;
         sdCardPath = getSDPath();
         if(null == sdCardPath) {
-            Ln.e(NONE_SD_CARD_PROMPT, new Object[0]);
+            Log.e(NONE_SD_CARD_PROMPT, new Object[0]+"");
             return false;
         } else {
             return true;

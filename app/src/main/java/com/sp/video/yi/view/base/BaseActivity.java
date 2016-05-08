@@ -1,6 +1,8 @@
 package com.sp.video.yi.view.base;
 
+import android.app.Activity;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.design.widget.Snackbar;
 import android.text.TextUtils;
 import android.util.Log;
@@ -8,9 +10,6 @@ import android.view.Gravity;
 import android.view.View;
 
 import com.github.johnpersano.supertoasts.SuperToast;
-import com.nd.hy.android.commons.util.Ln;
-import com.nd.hy.android.hermes.frame.view.AbsRxCompatActivity;
-import com.sp.video.yi.common.SchedulerFactory;
 import com.sp.video.yi.data.server.retrofit1.DataLayerRetrofit1Server;
 import com.sp.video.yi.data.server.retrofit2.DataLayerRetrofit2Server;
 import com.sp.video.yi.data.tcp.TelnetClient;
@@ -22,8 +21,10 @@ import javax.inject.Inject;
 import butterknife.ButterKnife;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+import rx.subjects.BehaviorSubject;
 
-public abstract class BaseActivity extends AbsRxCompatActivity {
+public abstract class BaseActivity extends Activity {
 
 
     protected View mRootView;
@@ -72,18 +73,19 @@ public abstract class BaseActivity extends AbsRxCompatActivity {
     }
 
     @Override
-    protected void onBaseCreate(Bundle state) {
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setContentView(getLayoutId());
         mRootView = findViewById(android.R.id.content);
-        ButterKnife.bind(this,mRootView);
-        Ln.d("Activity create:[%s]", getClass().getSimpleName());
+        ButterKnife.bind(this, mRootView);
     }
+
 
     @Override
     protected void onResume() {
         super.onResume();
         //MobclickAgent.onResume(this);//统计分析
-        Ln.d("Activity resume:[%s]", getClass().getSimpleName());
+//        Ln.d("Activity resume:[%s]", getClass().getSimpleName());
     }
 
     @Override
@@ -120,10 +122,11 @@ public abstract class BaseActivity extends AbsRxCompatActivity {
         toast.setGravity(Gravity.CENTER, 0, 0);
         toast.show();
     }
-    @Override
+
+
     protected <T> Observable<T> bind(Observable<T> observable) {
-        return super.bind(observable)
-                .subscribeOn(SchedulerFactory.getIoScheduler())
+        return observable
+                .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread());
     }
 

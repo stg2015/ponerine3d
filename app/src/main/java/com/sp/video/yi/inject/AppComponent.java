@@ -5,8 +5,6 @@ import android.app.Service;
 import android.support.annotation.NonNull;
 
 import com.sp.video.yi.view.base.BaseActivity;
-import com.sp.video.yi.view.base.BaseDialogFragment;
-import com.sp.video.yi.view.base.BaseFragment;
 
 
 /**
@@ -16,10 +14,6 @@ import com.sp.video.yi.view.base.BaseFragment;
 public interface AppComponent {
 
     void inject(BaseActivity activity);
-
-    void inject(BaseFragment fragment);
-
-    void inject(BaseDialogFragment dialogFragment);
 
     void inject(Service service);
 

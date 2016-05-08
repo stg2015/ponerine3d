@@ -2,8 +2,8 @@ package com.sp.video.yi.data.server.retrofit1.component;
 
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.nd.hy.android.commons.data.ObjectMapperUtils;
-import com.nd.hy.android.commons.util.IOUtils;
+import com.sp.video.yi.view.utils.IOUtils;
+import com.sp.video.yi.view.utils.ObjectMapperUtils;
 
 import java.io.IOException;
 import java.lang.reflect.Type;

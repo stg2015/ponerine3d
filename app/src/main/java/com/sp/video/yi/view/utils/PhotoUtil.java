@@ -12,9 +12,9 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.util.Base64;
+import android.util.Log;
 import android.widget.Toast;
 
-import com.nd.hy.android.commons.util.Ln;
 import com.sp.video.yi.demo.R;
 import com.sp.video.yi.view.utils.sdcard.SdCardStatus;
 
@@ -70,7 +70,8 @@ public class PhotoUtil {
             try {
                 mPhotoFile.createNewFile();
             } catch (IOException e) {
-                Ln.e(e);
+                e.printStackTrace();
+
             }
         }
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -132,7 +133,8 @@ public class PhotoUtil {
                 result = Base64.encodeToString(bitmapBytes, Base64.DEFAULT);
             }
         } catch (IOException e) {
-            Ln.e(e);
+            e.printStackTrace();
+
         } finally {
             try {
                 if (baos != null) {
@@ -140,7 +142,8 @@ public class PhotoUtil {
                     baos.close();
                 }
             } catch (IOException e) {
-                Ln.e(e);
+                e.printStackTrace();
+
             }
         }
         return result;
@@ -199,7 +202,8 @@ public class PhotoUtil {
             try {
                 photoFile.createNewFile();
             } catch (IOException e) {
-                Ln.e(e);
+                e.printStackTrace();
+
             }
         }
         intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
@@ -237,7 +241,7 @@ public class PhotoUtil {
                 result = Base64.encodeToString(bitmapBytes, Base64.DEFAULT);
             }
         } catch (IOException e) {
-            Ln.e(e);
+            e.printStackTrace();
         } finally {
             try {
                 if (baos != null) {
@@ -248,7 +252,7 @@ public class PhotoUtil {
                     bitmap.recycle();
                 }
             } catch (IOException e) {
-                Ln.e(e);
+               e.printStackTrace();
             }
         }
         return result;
@@ -440,7 +444,7 @@ public class PhotoUtil {
         // 判断Sd卡是否存在或可写
         if (!Environment.getExternalStorageState().equals(
                 Environment.MEDIA_MOUNTED)) {
-            Ln.e("SD卡不存在或不可写");
+            Log.e("photoUtil","SD卡不存在或不可写");
             return uri;
         }
         // 图片所存的ＳＤ卡文件夹

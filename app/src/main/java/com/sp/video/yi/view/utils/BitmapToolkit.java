@@ -31,12 +31,12 @@ import android.os.Environment;
 import android.os.StatFs;
 import android.provider.MediaStore.Images;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
 import android.widget.ImageView;
 
 
-import com.nd.hy.android.commons.util.Ln;
 
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
@@ -82,7 +82,7 @@ public class BitmapToolkit {
         File dirFile = new File(getFullPath(pid, size, dir));
         if (dirFile.exists()) {
             boolean result = dirFile.delete();
-            Ln.v(TAG, "deletePic" + getFullPath(pid, size, dir) + "result:"
+            Log.v(TAG, "deletePic" + getFullPath(pid, size, dir) + "result:"
                     + result);
         }
     }
@@ -108,7 +108,7 @@ public class BitmapToolkit {
     public static boolean isExist(long pid, int size, String dir) {
         File dirFile = new File(getFullPath(pid, size, dir));
         boolean isExit = dirFile.exists() && dirFile.length() > 0;
-        Ln.v(TAG, "isExit:" + dirFile.length() + "----" + pid + isExit
+        Log.v(TAG, "isExit:" + dirFile.length() + "----" + pid + isExit
                 + dirFile.getAbsolutePath());
         return isExit;
     }
@@ -229,7 +229,7 @@ public class BitmapToolkit {
     public boolean isExist() {
         File dirFile = new File(getAbsolutePath());
         boolean isExit = dirFile.exists() && dirFile.length() > 0;
-        Ln.v(TAG, "isExit:" + isExit + " size:" + dirFile.length()
+        Log.v(TAG, "isExit:" + isExit + " size:" + dirFile.length()
                 + " absoulutePath:" + getAbsolutePath());
         return isExit;
     }
@@ -238,7 +238,7 @@ public class BitmapToolkit {
         File dirFile = new File(getAbsolutePath());
         if (dirFile.exists()) {
             boolean result = dirFile.delete();
-            Ln.v(TAG, "deletePic" + getAbsolutePath() + "result:" + result);
+            Log.v(TAG, "deletePic" + getAbsolutePath() + "result:" + result);
         }
     }
 
@@ -313,7 +313,7 @@ public class BitmapToolkit {
             File dirFile = new File(url);
 
             if (!dirFile.exists()) {
-                Ln.v(TAG, "loadBitmap not exit");
+                Log.v(TAG, "loadBitmap not exit");
             } else {
                 Options bmpFactoryOptions = new Options();
                 bmpFactoryOptions.inJustDecodeBounds = false;
@@ -323,13 +323,13 @@ public class BitmapToolkit {
                 bitmap = BitmapFactory.decodeFile(url, bmpFactoryOptions);
             }
         } catch (Exception e) {
-            Ln.e(TAG, "loadBitmap" + e.toString());
+            Log.e(TAG, "loadBitmap" + e.toString());
         } catch (OutOfMemoryError error) {
             // 图片过大，压缩处理
             try {
                 bitmap = ShrinkBitmap(url, 480, 800);
             } catch (Exception e) {
-                Ln.e(TAG, "loadBitmap" + e.toString());
+                Log.e(TAG, "loadBitmap" + e.toString());
             } catch (OutOfMemoryError e) {
                 try {
                     bitmap = ShrinkBitmap(url, 320, 480);
@@ -349,7 +349,7 @@ public class BitmapToolkit {
             File dirFile = new File(url);
 
             if (!dirFile.exists()) {
-                Ln.v(TAG, "loadBitmap not exit");
+                Log.v(TAG, "loadBitmap not exit");
             } else {
                 Options bmpFactoryOptions = new Options();
                 bmpFactoryOptions.inJustDecodeBounds = false;
@@ -359,31 +359,31 @@ public class BitmapToolkit {
                 bitmap = BitmapFactory.decodeFile(url, bmpFactoryOptions);
                 // rotate from exif
                 int degree = getDegree(url);
-                Ln.v(TAG, "original degree：" + degree);
+                Log.v(TAG, "original degree：" + degree);
                 if (degree > 0) {
                     bitmap = rotateBitmap(bitmap, degree);
                 }
             }
         } catch (Exception e) {
-            Ln.e(TAG, "loadBitmap" + e.toString());
+            Log.e(TAG, "loadBitmap" + e.toString());
         } catch (OutOfMemoryError error) {
             // 图片过大，压缩处理
             try {
                 bitmap = ShrinkBitmap(url, 480, 800);
                 // rotate from exif
                 int degree = getDegree(url);
-                Ln.v(TAG, "480x800 degree：" + degree);
+                Log.v(TAG, "480x800 degree：" + degree);
                 if (degree > 0) {
                     bitmap = rotateBitmap(bitmap, degree);
                 }
             } catch (Exception e) {
-                Ln.e(TAG, "loadBitmap" + e.toString());
+                Log.e(TAG, "loadBitmap" + e.toString());
             } catch (OutOfMemoryError e) {
                 try {
                     bitmap = ShrinkBitmap(url, 320, 480);
                     // rotate from exif
                     int degree = getDegree(url);
-                    Ln.v(TAG, "320x480 degree：" + degree);
+                    Log.v(TAG, "320x480 degree：" + degree);
                     if (degree > 0) {
                         bitmap = rotateBitmap(bitmap, degree);
                     }
@@ -405,7 +405,7 @@ public class BitmapToolkit {
             File dirFile = new File(url);
 
             if (!dirFile.exists()) {
-                Ln.v(TAG, "loadBitmap not exit");
+                Log.v(TAG, "loadBitmap not exit");
             } else {
                 Options bmpFactoryOptions = new Options();
                 bmpFactoryOptions.inJustDecodeBounds = true;
@@ -442,7 +442,7 @@ public class BitmapToolkit {
                 bitmap = Bitmap.createBitmap(bitmap, x, y, w, h);
             }
         } catch (Exception e) {
-            Ln.e(TAG, "loadBitmap" + e.toString());
+            Log.e(TAG, "loadBitmap" + e.toString());
             if (bitmap != null) {
                 if (!bitmap.isRecycled()) {
                     bitmap.recycle();
@@ -478,7 +478,7 @@ public class BitmapToolkit {
                 }
                 bitmap = Bitmap.createBitmap(bitmap, x, y, w, h);
             } catch (Exception e) {
-                Ln.e(TAG, "loadBitmap" + e.toString());
+                Log.e(TAG, "loadBitmap" + e.toString());
                 if (bitmap != null) {
                     if (!bitmap.isRecycled()) {
                         bitmap.recycle();
@@ -543,7 +543,7 @@ public class BitmapToolkit {
             File dirFile = new File(url);
 
             if (!dirFile.exists()) {
-                Ln.v(TAG, "loadBitmap not exit");
+                Log.v(TAG, "loadBitmap not exit");
             } else {
                 Options bmpFactoryOptions = new Options();
                 bmpFactoryOptions.inJustDecodeBounds = false;
@@ -557,7 +557,7 @@ public class BitmapToolkit {
                 }
             }
         } catch (Exception e) {
-            Ln.e(TAG, "loadBitmap" + e.toString());
+            Log.e(TAG, "loadBitmap" + e.toString());
             if (bitmap != null) {
                 if (!bitmap.isRecycled()) {
                     bitmap.recycle();
@@ -582,7 +582,7 @@ public class BitmapToolkit {
                     bitmap = rotateBitmapWithThrowsOOM(bitmap, degree);
                 }
             } catch (Exception e) {
-                Ln.e(TAG, "loadBitmap" + e.toString());
+                Log.e(TAG, "loadBitmap" + e.toString());
                 if (bitmap != null) {
                     if (!bitmap.isRecycled()) {
                         bitmap.recycle();
@@ -635,12 +635,12 @@ public class BitmapToolkit {
         try {
             File dirFile = new File(url);
             if (!dirFile.exists()) {
-                Ln.v(TAG, "loadBitmap not exit");
+                Log.v(TAG, "loadBitmap not exit");
             } else {
                 fis = new FileInputStream(url);
             }
         } catch (Exception e) {
-            Ln.e(TAG, "loadBitmap" + e.toString());
+            Log.e(TAG, "loadBitmap" + e.toString());
         }
         return fis;
     }
@@ -892,7 +892,7 @@ public class BitmapToolkit {
                 System.gc();
             }
             bm = BitmapFactory.decodeFile(path, options);
-            // Ln.v(TAG, "getLocalBitmap width " + bm.getWidth() + " height " +
+            // Log.v(TAG, "getLocalBitmap width " + bm.getWidth() + " height " +
             // bm.getHeight());
         } catch (OutOfMemoryError e) {
             e.printStackTrace();
@@ -993,7 +993,7 @@ public class BitmapToolkit {
     public boolean saveByte(byte[] byteArray) {
         if (byteArray == null)
             return false;
-        Ln.v(TAG, "saveByte" + mRemoteUrl + getAbsolutePath());
+        Log.v(TAG, "saveByte" + mRemoteUrl + getAbsolutePath());
         mkdirsIfNotExist();
 
         File myCaptureFile = new File(getAbsolutePath());
@@ -1005,7 +1005,7 @@ public class BitmapToolkit {
 
             fileOutPutStream.write(byteArray, 0, byteArray.length);
         } catch (Exception e) {
-            Ln.e(TAG, "saveBitmap" + e.toString());
+            Log.e(TAG, "saveBitmap" + e.toString());
             return false;
         }
 
@@ -1116,9 +1116,9 @@ public class BitmapToolkit {
             bmp.compress(CompressFormat.JPEG, 80, bos);
             bos.flush();
             bos.close();
-            Ln.v(TAG, "saveBitmap create" + getFullPath(pid, size, dir));
+            Log.v(TAG, "saveBitmap create" + getFullPath(pid, size, dir));
         } catch (Exception e) {
-            Ln.e(TAG, "saveBitmap" + e.toString());
+            Log.e(TAG, "saveBitmap" + e.toString());
             return false;
         }
         return true;
@@ -1142,9 +1142,9 @@ public class BitmapToolkit {
             bmp.compress(CompressFormat.JPEG, 80, bos);
             bos.flush();
             bos.close();
-            Ln.v(TAG, "saveBitmap create" + getAbsolutePath());
+            Log.v(TAG, "saveBitmap create" + getAbsolutePath());
         } catch (Exception e) {
-            Ln.e(TAG, "saveBitmap" + e.toString());
+            Log.e(TAG, "saveBitmap" + e.toString());
             return false;
         }
         return true;
@@ -1192,7 +1192,7 @@ public class BitmapToolkit {
             bmp.compress(format, 80, bos);
             return true;
         } catch (Exception e) {
-            Ln.e(TAG, "saveBitmap" + e.toString());
+            Log.e(TAG, "saveBitmap" + e.toString());
             return false;
         } finally {
             if ( bos!=null){
@@ -1245,7 +1245,7 @@ public class BitmapToolkit {
                     bmp = null;
                 }
             }
-            Ln.v(TAG, "releaseAllMemory : " + mBitmapArray.size());
+            Log.v(TAG, "releaseAllMemory : " + mBitmapArray.size());
             mBitmapArray.clear();
         }
     }
@@ -1317,7 +1317,7 @@ public class BitmapToolkit {
                                  selection, selectionArgs, null);
         boolean hadSaved = false;
         if (cursor != null && cursor.getCount() > 0) {
-            Ln.v(TAG, "media photo find:" + cursor.getCount());
+            Log.v(TAG, "media photo find:" + cursor.getCount());
             hadSaved = true;
         }
         if (cursor != null && !cursor.isClosed()) {
@@ -1704,7 +1704,7 @@ public class BitmapToolkit {
             input = context.getContentResolver().openInputStream(uri);
             return BitmapFactory.decodeStream(input, null, options);
         } catch (IOException e) {
-            Ln.e(TAG, e.getMessage());
+            Log.e(TAG, e.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
         } catch (Error e) {
@@ -1714,7 +1714,7 @@ public class BitmapToolkit {
                 try {
                     input.close();
                 } catch (IOException e) {
-                    Ln.e(TAG, e.getMessage());
+                    Log.e(TAG, e.getMessage());
                 }
             }
         }

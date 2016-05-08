@@ -12,7 +12,6 @@ import android.widget.ListView;
 public class MainTestActivity extends ListActivity {
     public static final String[] options = {
             "PlayerTestActivity",
-            "RetrofitTestActivity",
             "YiTestActivity"};
     @Override
     protected void onResume() {
@@ -29,10 +28,8 @@ public class MainTestActivity extends ListActivity {
             case 0:
                 intent = new Intent(this,PlayerTestActivity.class);
                 break;
+
             case 1:
-                intent = new Intent(this,RetrofitTestActivity.class);
-                break;
-            case 2:
                 intent = new Intent(this,YiTestActivity.class);
                 break;
         }

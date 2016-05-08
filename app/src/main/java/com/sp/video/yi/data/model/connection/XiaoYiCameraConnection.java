@@ -2,9 +2,9 @@ package com.sp.video.yi.data.model.connection;
 
 import android.util.Log;
 
-import com.nd.hy.android.commons.data.ObjectMapperUtils;
 import com.sp.video.yi.data.model.BaseMsg;
 import com.sp.video.yi.data.model.GetTokenMsg;
+import com.sp.video.yi.view.utils.ObjectMapperUtils;
 
 import java.io.IOException;
 import java.io.Serializable;

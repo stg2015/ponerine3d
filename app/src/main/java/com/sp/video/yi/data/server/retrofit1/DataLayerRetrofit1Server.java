@@ -3,10 +3,10 @@ package com.sp.video.yi.data.server.retrofit1;
 import android.util.Log;
 
 import com.jakewharton.retrofit.Ok3Client;
-import com.nd.hy.android.commons.data.ObjectMapperUtils;
 import com.sp.video.yi.data.server.DataLayer;
 import com.sp.video.yi.data.server.retrofit1.component.BasicErrorHandler;
 import com.sp.video.yi.data.server.retrofit1.component.JsonConverter;
+import com.sp.video.yi.view.utils.ObjectMapperUtils;
 
 import okhttp3.OkHttpClient;
 import retrofit.RequestInterceptor;

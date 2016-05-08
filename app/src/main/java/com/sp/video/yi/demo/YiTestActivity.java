@@ -34,13 +34,15 @@ public class YiTestActivity extends BaseActivity {
     }
 
     @Override
-    protected void afterCreate(Bundle bundle) {
+    protected void onResume() {
+        super.onResume();
         Log.d("wwc", "Thread: afterCreate id = " + Thread.currentThread().getId());
 
         testCameta = new XiaoYiCameraConnection(HOST,PORT);
         sendMsg();
-
     }
+
+
     public void sendMsg() {
         bind(Observable.defer(new Func0<Observable<Object>>() {
             @Override
