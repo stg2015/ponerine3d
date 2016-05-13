@@ -20,12 +20,18 @@ public class PlayerTestActivity extends AppCompatActivity implements View.OnClic
 
     @Bind(R.id.toolbar)
     Toolbar    toolbar;
-    @Bind(R.id.tv_ip_address)
-    EditText   tvIpAddress;
-    @Bind(R.id.btn_start)
-    Button     btnStart;
-    @Bind(R.id.pv_video)
-    PlayerView mPlayerView;
+    @Bind(R.id.tv_ip_address1)
+    EditText   tvIpAddress1;
+    @Bind(R.id.tv_ip_address2)
+    EditText   tvIpAddress2;
+    @Bind(R.id.btn_start1)
+    Button     btnStart1;
+    @Bind(R.id.btn_start2)
+    Button     btnStart2;
+    @Bind(R.id.pv_video1)
+    PlayerView mPlayerView1;
+    @Bind(R.id.pv_video2)
+    PlayerView mPlayerView2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,33 +41,42 @@ public class PlayerTestActivity extends AppCompatActivity implements View.OnClic
         setSupportActionBar(toolbar);
 
     }
-    private static final String RTSP_URL_FORMATER = "rtsp://%1$s:554/live";
-    private String mRTSPUrl = "";
+    private static final String RTSP_URL_FORMATER = "rtsp://%1$s/live";
+    private String mRTSPUrl1 = "";
+    private String mRTSPUrl2 = "";
 
     @Override
     protected void onResume() {
         super.onResume();
-        mRTSPUrl = getRTSPUrl();
+        mRTSPUrl1 = getRTSPUrl(1);
+        mRTSPUrl2 = getRTSPUrl(2);
         //使用步骤
-        //第一步 ：通过findViewById或者new PlayerView()得到mPlayerView对象
-        //mPlayerView= new PlayerView(PlayerActivity.this);
+        //第一步 ：通过findViewById或者new PlayerView()得到mPlayerView1对象
+        //mPlayerView1= new PlayerView(PlayerActivity.this);
 
         //第二步：设置参数，毫秒为单位
-        mPlayerView.setNetWorkCache(1000);
+        mPlayerView1.setNetWorkCache(1000);
+        mPlayerView2.setNetWorkCache(1000);
 
         //第三步:初始化播放器
-        mPlayerView.initPlayer(mRTSPUrl);
+        mPlayerView1.initPlayer(mRTSPUrl1);
+        mPlayerView2.initPlayer(mRTSPUrl2);
 
         //第四步:设置事件监听，监听缓冲进度等
-        mPlayerView.setOnChangeListener(this);
+        mPlayerView1.setOnChangeListener(this);
+        mPlayerView2.setOnChangeListener(this);
 
         //第五步：开始播放
-        mPlayerView.start();
+        mPlayerView1.start();
+        mPlayerView2.start();
     }
 
-    private String getRTSPUrl() {
-        String formatUrl = "";
-        formatUrl =  String.format(RTSP_URL_FORMATER,tvIpAddress.getText().toString().trim());
+    private String getRTSPUrl(int index) {
+        String formatUrl;
+        if (index == 1)
+            formatUrl =  String.format(RTSP_URL_FORMATER,tvIpAddress1.getText().toString().trim());
+        else
+            formatUrl =  String.format(RTSP_URL_FORMATER,tvIpAddress2.getText().toString().trim());
         return  formatUrl;
     }
 
@@ -87,20 +102,30 @@ public class PlayerTestActivity extends AppCompatActivity implements View.OnClic
         return super.onOptionsItemSelected(item);
     }
 
-    @OnClick({R.id.toolbar, R.id.tv_ip_address, R.id.btn_start, R.id.pv_video})
+    @OnClick({R.id.toolbar, R.id.tv_ip_address1, R.id.btn_start1, R.id.pv_video1, R.id.tv_ip_address2, R.id.btn_start2, R.id.pv_video2})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.toolbar:
                 break;
-            case R.id.tv_ip_address:
+            case R.id.tv_ip_address1:
                 break;
-            case R.id.btn_start:
-                mPlayerView.pause();
-                mRTSPUrl = getRTSPUrl();
-                mPlayerView.initPlayer(mRTSPUrl);
-                mPlayerView.start();
+            case R.id.tv_ip_address2:
                 break;
-            case R.id.pv_video:
+            case R.id.btn_start1:
+                mPlayerView1.pause();
+                mRTSPUrl1 = getRTSPUrl(1);
+                mPlayerView1.initPlayer(mRTSPUrl1);
+                mPlayerView1.start();
+                break;
+            case R.id.btn_start2:
+                mPlayerView2.pause();
+                mRTSPUrl2 = getRTSPUrl(2);
+                mPlayerView2.initPlayer(mRTSPUrl2);
+                mPlayerView2.start();
+                break;
+            case R.id.pv_video1:
+                break;
+            case R.id.pv_video2:
                 break;
         }
     }
@@ -128,6 +153,7 @@ public class PlayerTestActivity extends AppCompatActivity implements View.OnClic
     @Override
     protected void onPause() {
         super.onPause();
-        mPlayerView.stop();
+        mPlayerView1.stop();
+        mPlayerView2.stop();
     }
 }
