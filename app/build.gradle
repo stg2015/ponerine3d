@@ -67,6 +67,7 @@ dependencies {
 //    compile 'com.fuckhtc:gson:2.1'
 
     compile 'io.netty:netty-all:4.1.0.CR6'
+    compile 'com.lantouzi.wheelview:library:1.1.2'
 //    compile 'io.netty:netty-example:4.1.0.CR7'
 
     //android libs

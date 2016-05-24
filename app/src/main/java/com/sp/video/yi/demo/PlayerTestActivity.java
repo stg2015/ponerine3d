@@ -10,23 +10,27 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.lantouzi.wheelview.WheelView;
 import com.sp.vlc_player.PlayerView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class PlayerTestActivity extends AppCompatActivity implements View.OnClickListener, PlayerView.OnChangeListener {
+public class PlayerTestActivity extends AppCompatActivity implements View.OnClickListener, PlayerView.OnChangeListener, WheelView.OnWheelItemSelectedListener {
 
     @Bind(R.id.toolbar)
     Toolbar    toolbar;
     @Bind(R.id.tv_ip_address)
     EditText   tvIpAddress;
-    @Bind(R.id.btn_start)
-    Button     btnStart;
     @Bind(R.id.pv_video)
     PlayerView mPlayerView;
 
+    @Bind(R.id.wheelview)
+    WheelView mWheelView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +38,16 @@ public class PlayerTestActivity extends AppCompatActivity implements View.OnClic
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
 
+        List<String> items = new ArrayList<>();
+        items.add("11");
+        items.add("12");
+        items.add("13");
+        items.add("14");
+        items.add("16");
+        mWheelView.setItems(items);
+        mWheelView.setMinSelectableIndex(0);
+        mWheelView.setMaxSelectableIndex(items.size() - 1);
+        mWheelView.setOnWheelItemSelectedListener(this);
     }
     private static final String RTSP_URL_FORMATER = "rtsp://%1$s:554/live";
     private String mRTSPUrl = "";
@@ -61,7 +75,7 @@ public class PlayerTestActivity extends AppCompatActivity implements View.OnClic
 
     private String getRTSPUrl() {
         String formatUrl = "";
-        formatUrl =  String.format(RTSP_URL_FORMATER,tvIpAddress.getText().toString().trim());
+        formatUrl =  String.format(RTSP_URL_FORMATER, tvIpAddress.getText().toString().trim()+mWheelView.getItems().get(mWheelView.getSelectedPosition()));
         return  formatUrl;
     }
 
@@ -87,18 +101,12 @@ public class PlayerTestActivity extends AppCompatActivity implements View.OnClic
         return super.onOptionsItemSelected(item);
     }
 
-    @OnClick({R.id.toolbar, R.id.tv_ip_address, R.id.btn_start, R.id.pv_video})
+    @OnClick({R.id.toolbar, R.id.tv_ip_address, R.id.pv_video})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.toolbar:
                 break;
             case R.id.tv_ip_address:
-                break;
-            case R.id.btn_start:
-                mPlayerView.pause();
-                mRTSPUrl = getRTSPUrl();
-                mPlayerView.initPlayer(mRTSPUrl);
-                mPlayerView.start();
                 break;
             case R.id.pv_video:
                 break;
@@ -129,5 +137,18 @@ public class PlayerTestActivity extends AppCompatActivity implements View.OnClic
     protected void onPause() {
         super.onPause();
         mPlayerView.stop();
+    }
+
+    @Override
+    public void onWheelItemChanged(WheelView wheelView, int position) {
+
+    }
+
+    @Override
+    public void onWheelItemSelected(WheelView wheelView, int position) {
+        mPlayerView.pause();
+        mRTSPUrl = getRTSPUrl();
+        mPlayerView.initPlayer(mRTSPUrl);
+        mPlayerView.start();
     }
 }
