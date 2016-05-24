@@ -1,9 +1,9 @@
 package com.sp.video.yi.demo;
 
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 import com.sp.video.yi.data.model.connection.XiaoYiCameraConnection;
 import com.sp.video.yi.view.base.BaseActivity;
@@ -19,12 +19,13 @@ import rx.functions.Func0;
  * Created by Weichao Wang on 2016/4/27.
  */
 public class YiTestActivity extends BaseActivity {
-    public static String HOST = "192.168.31.15";
+    public static String HOST = "192.168.170.101";
     public static int    PORT = 7878;
-    XiaoYiCameraConnection testCameta;
+    XiaoYiCameraConnection testCamera;
     Channel channel;
 
-
+    @Bind(R.id.txt_ip_address)
+    EditText txtIpAddress;
     @Bind(R.id.btn_retry)
     Button btnRetry;
 
@@ -37,9 +38,16 @@ public class YiTestActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         Log.d("wwc", "Thread: afterCreate id = " + Thread.currentThread().getId());
-
-        testCameta = new XiaoYiCameraConnection(HOST,PORT);
+        testCamera = new XiaoYiCameraConnection(getHOST_ip_address(),PORT);
         sendMsg();
+    }
+
+    private String getHOST_ip_address() {
+        String ip_address = txtIpAddress.getText().toString().trim();
+        if (!ip_address.equals(""))
+            return ip_address;
+        else
+            return HOST;
     }
 
 
@@ -48,8 +56,8 @@ public class YiTestActivity extends BaseActivity {
             @Override
             public Observable<Object> call() {
                 try {
-                    channel  = getTelnetClient().connectChannel(testCameta,false);
-                    getTelnetClient().sendMsg(channel, testCameta.getAccessTokenMsg());
+                    channel  = getTelnetClient().connectChannel(testCamera,false);
+                    getTelnetClient().sendMsg(channel, testCamera.getAccessTokenMsg());
                 } catch (Exception e) {
 // TODO Auto-generated catch block
                     e.printStackTrace();
@@ -74,6 +82,9 @@ public class YiTestActivity extends BaseActivity {
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.btn_retry:
+                getTelnetClient().closeAllChannel();
+                Log.d("wwc", "Thread: afterCreate id = " + Thread.currentThread().getId());
+                testCamera = new XiaoYiCameraConnection(getHOST_ip_address(),PORT);
                 sendMsg();
                 break;
             case R.id.btn_close:
